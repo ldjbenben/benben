@@ -1,0 +1,15 @@
+@charset "utf-8";
+
+div.ui-dialog{
+	border:1px solid rgba(aa, aa, aa, 0.8);
+	box-shadow:0px 2px 6px rgba(55, 55,55,0.7);
+}
+div.ui-widget-header{
+	background:rgb(243, 243, 243);
+	border:none;
+	border-bottom:solid 1px #eeeeee;
+	border-radius:0px;
+	text-align:center;
+	font-size:22px;
+	color:#666;
+}

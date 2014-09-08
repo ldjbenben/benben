@@ -1,0 +1,246 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>购物车</title>
+<link rel="stylesheet" type="text/css" href="css/main.css" />
+<script type="text/javascript" src="js/jquery.min.js"></script>
+</head>
+
+<body>
+<div id="layoutBody">
+	<div id="layoutMain">
+    	<div class="table-list cart-list">
+        	<div class="thead">
+            	<ul>
+                	<li class="cell cell-check">&nbsp;</li>
+                	<li class="cell cell-pic">缩略图</li>
+                	<li class="cell cell-title">商品名称</li>
+                    <li class="cell cell-price">单价</li>
+                    <li class="cell cell-amount">数量</li>
+                    <li class="cell cell-sum">小计</li>
+                    <li class="cell cell-handler">&nbsp;</li>
+                </ul>
+                <div class="clear"></div>
+            </div>
+            <div class="tbar">
+                <span class="tip">待付款商品</span>
+                <span class="check-all"><input type="checkbox" /> 全选</span>
+                <span class="btn-wrap">
+                    <a href="#" class="link add-goods">添加商品</a>
+                    <!-- <a href="#" class="button save-btn">添加商品</a>
+                    <a href="#" class="button save-btn">保存</a> -->
+                </span>
+            </div>
+            <div id="waitPayList">
+            	<div class="tbody">
+               	 <div class="item field-item">
+                        <ul>
+                        	<li class="cell cell-check"><input type="checkbox" /></li>
+                            <li class="cell cell-pic"><img src="img/default_head.jpg" /></li>
+                            <li class="cell cell-title">个人场地费</li>
+                            <li class="cell cell-price">5.0</li>
+                            <li class="cell cell-amount">
+                                <div>
+                                    <a class="decrease-btn">-</a>
+                                    <input type="text" class="amount-txt" />
+                                    <a class="increase-btn">+</a>
+                                </div>
+                            </li>
+                            <li class="cell cell-sum">10.0</li>
+                            <li class="cell cell-handler">
+                                <a href="#" class="button link-btn">删除</a>
+                                <a href="#" class="button link-btn">付款</a>
+                            </li>
+                        </ul>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="item">
+                        <ul>
+                        	<li class="cell cell-check"><input type="checkbox" /></li>
+                            <li class="cell cell-pic"><img src="img/default_head.jpg" /></li>
+                            <li class="cell cell-title">脉动</li>
+                            <li class="cell cell-price">5.0</li>
+                            <li class="cell cell-amount">
+                                <div>
+                                    <a class="decrease-btn">-</a>
+                                    <input type="text" class="amount-txt" />
+                                    <a class="increase-btn">+</a>
+                                </div>
+                            </li>
+                            <li class="cell cell-sum">10.0</li>
+                            <li class="cell cell-handler">
+                                <a href="#" class="button link-btn">删除</a>
+                                <a href="#" class="button link-btn">付款</a>
+                            </li>
+                        </ul>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="item">
+                        <ul>
+                        	<li class="cell cell-check"><input type="checkbox" /></li>
+                            <li class="cell cell-pic"><img src="img/default_head.jpg" /></li>
+                            <li class="cell cell-title">脉动</li>
+                            <li class="cell cell-price">5.0</li>
+                            <li class="cell cell-amount">
+                                <div>
+                                    <a class="decrease-btn">-</a>
+                                    <input type="text" class="amount-txt" />
+                                    <a class="increase-btn">+</a>
+                                </div>
+                            </li>
+                            <li class="cell cell-sum">10.0</li>
+                            <li class="cell cell-handler">
+                                <a href="#" class="button link-btn">删除</a>
+                                <a href="#" class="button link-btn">付款</a>
+                            </li>
+                        </ul>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="item">
+                        <ul>
+                        	<li class="cell cell-check"><input type="checkbox" /></li>
+                            <li class="cell cell-pic"><img src="img/default_head.jpg" /></li>
+                            <li class="cell cell-title">脉动</li>
+                            <li class="cell cell-price">5.0</li>
+                            <li class="cell cell-amount">
+                                <div>
+                                    <a class="decrease-btn">-</a>
+                                    <input type="text" class="amount-txt" />
+                                    <a class="increase-btn">+</a>
+                                </div>
+                            </li>
+                            <li class="cell cell-sum">10.0</li>
+                            <li class="cell cell-handler">
+                                <a href="#" class="button link-btn">删除</a>
+                                <a href="#" class="button link-btn">付款</a>
+                            </li>
+                        </ul>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <div class="tfoot">
+                	<div class="links-area">
+	               	 	<a href="#" class="link">标记选中项为已付款</a>
+                    </div>
+                    <div class="data-area">
+                   		<span class="advance-wrap">预留款：<input type="text" value="20" class="advance-txt" /> 元</span>
+                        <span class="total-price-wrap">总计：<span class="money total-price" id="totalPrice">￥120.0</span></span>
+                        <span class="pay-wrap"><a href="#" class="button pay-submit-btn">付款</a></span>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                </div>
+                <div id="payedList">
+                	<div class="tbar">
+                    	<div class="tip"><span>已付款商品</span></div>
+                    </div>
+                    <div class="tbody">
+                        <div class="item">
+                            <ul>
+                                <li class="cell cell-check">&nbsp;</li>
+                                <li class="cell cell-pic"><img src="img/default_head.jpg" /></li>
+                                <li class="cell cell-title">脉动</li>
+                                <li class="cell cell-price">5.0</li>
+                                <li class="cell cell-amount">3</li>
+                                <li class="cell cell-sum">10.0</li>
+                                <li class="cell cell-handler">
+                                    <a href="#" class="button del-btn">删除</a>
+                                </li>
+                            </ul>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="item">
+                            <ul>
+                                <li class="cell cell-check">&nbsp;</li>
+                                <li class="cell cell-pic"><img src="img/default_head.jpg" /></li>
+                                <li class="cell cell-title">脉动</li>
+                                <li class="cell cell-price">5.0</li>
+                                <li class="cell cell-amount">3</li>
+                                <li class="cell cell-sum">10.0</li>
+                                <li class="cell cell-handler">
+                                    <a href="#" class="button del-btn">删除</a>
+                                </li>
+                            </ul>
+                            <div class="clear"></div>
+                        </div>
+                	</div>
+                    <div class="tfoot">
+                        <div class="links-area">
+                            <!-- <a href="#" class="link">删除选中的商品</a> -->
+                        </div>
+                        <div class="data-area">
+                            <span class="total-price-wrap">总计：<span class="money total-price" id="totalPrice">￥120.0</span></span>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+            	</div>
+            <div class="tfoot">
+            	<div class="note-area">
+                	<span>备注：</span><textarea name="form[note]" cols="50" rows="2" class="note-txt"></textarea>
+                </div>
+                <div class="data-area">
+	            	<span>总计：<span class="money total-price" id="totalPrice">￥120.0</span></span>
+    	        	<a href="#" class="button submit-btn">结算</a>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+function updateTotalPrice()
+{
+	var len = g_goods.length;
+	g_total = 0;
+	g_num = 0;
+	for(var i=0; i<g_goods.length; i++)
+	{
+		g_goods[i]['subtotal'] = g_goods[i]['price'] * g_goods[i]['num'];
+		g_total += g_goods[i]['price'] * g_goods[i]['num'];
+		g_num += g_goods[i]['num'];
+	}
+
+	jQuery("#totalPrice").html("￥"+g_total);
+	g_total = (g_total - g_usedBalance - g_freeTicketPrice);
+	jQuery("#needTotalPrice").html("￥"+g_total);
+	jQuery("#totalPriceInput").val(g_total);
+
+	jQuery(".order-summary").show();
+}
+
+function updateSubtotalPrice(i)
+{
+	g_goods[i]['subtotal'] = g_goods[i]['price'] * g_goods[i]['num'];
+	jQuery("#goods"+i+" .subtotal").html(g_goods[i]['subtotal']);
+}
+
+jQuery(function(){
+	// 增加购买数量事件
+	jQuery(".cart-list .decrease-btn").live("click", function(){
+		var amountObj = jQuery(this).siblings(".amount-txt");
+		var amount = amountObj.val();
+
+		if(amount > 1)
+		{
+			amountObj.val(amount-1);	
+		}
+		
+		updateSubtotalPrice(i);
+		updateTotalPrice();
+	});	
+	
+	// 减少购买数量事件
+	jQuery(".cart-list .increase-btn").live("click", function(){
+		var amountObj = jQuery(this).siblings(".amount-txt");
+		var amount = parseInt(amountObj.val());
+		
+		amountObj.val(amount+1);
+		
+		updateSubtotalPrice(i);
+		updateTotalPrice();
+	});	
+});
+</script>
+</body>
+</html>

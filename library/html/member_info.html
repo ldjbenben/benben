@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>会员信息</title>
+<link rel="stylesheet" type="text/css" href="css/main.css" />
+<link rel="stylesheet" type="text/css" href="jQueryUI/themes/base/jquery-ui.css" />
+<link rel="stylesheet" type="text/css" href="jQueryUI/themes/base/jquery.ui.dialog.css" />
+<link rel="stylesheet" type="text/css" href="css/jquery-ui-schema-1.css" />
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="jQueryUI/jquery-ui.js"></script>
+<script type="text/javascript" src="jQueryUI/jquery.ui.dialog.js"></script>
+</head>
+
+<body>
+<div id="memberForm" title="会员信息">
+<form>
+	<div class="form-item">
+    	<label>头像：</label>
+        <span><input type="file" name="form[head]" class="file" /></span>
+    </div>
+    <div class="form-item">
+    	<label>会员名：</label>
+        <span><input type="text" name="form[name]" class="txt name" /></span>
+    </div>
+    <div class="form-item">
+    	<label>手机号：</label>
+        <span><input type="text" name="form[mobile]" class="number tel" /></span>
+    </div>
+    <div class="form-item">
+    	<label>预存款：</label>
+        <span><input type="number" name="form[balance]" class="number small-txt" /> 元</span>
+    </div>
+    <div class="form-item">
+    	<label>免费券：</label>
+        <span><input type="number" name="form[balance]" class="number small-txt" /> 次</span>
+    </div>
+    <div class="form-item button-item">
+        <span><input type="submit" value="保存" class="button" /></span>
+    </div>
+</form>
+</div>
+<script type="text/javascript">
+jQuery(function(){
+	jQuery("#memberForm").dialog({
+		"width":300,
+	});
+});
+</script>
+</body>
+</html>

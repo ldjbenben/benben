@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>商品信息</title>
+<link rel="stylesheet" type="text/css" href="css/main.css" />
+<link rel="stylesheet" type="text/css" href="jQueryUI/themes/base/jquery-ui.css" />
+<link rel="stylesheet" type="text/css" href="jQueryUI/themes/base/jquery.ui.dialog.css" />
+<link rel="stylesheet" type="text/css" href="css/jquery-ui-schema-1.css" />
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="jQueryUI/jquery-ui.js"></script>
+<script type="text/javascript" src="jQueryUI/jquery.ui.dialog.js"></script>
+</head>
+
+<body>
+<div id="memberForm" title="商品信息">
+<form>
+	<div class="form-item">
+    	<label>缩略图：</label>
+        <span><input type="file" name="form[litpic]" class="file" /></span>
+    </div>
+    <div class="form-item">
+    	<label>商品名称：</label>
+        <span><input type="text" name="form[title]" class="txt name" /></span>
+    </div>
+    <div class="form-item">
+    	<label>商品分类：</label>
+        <span>
+        	<select name="form[cid]">
+            	<option value="1">饮料</option>
+                <option value="1">羽毛球</option>
+                <option value="1">把胶</option>
+                <option value="1">衣服</option>
+                <option value="1">袜子</option>
+                <option value="1">球线</option>
+            </select>   
+        </span>
+    </div>
+    <div class="form-item">
+    	<label>成本价：</label>
+        <span><input type="number" name="form[cost_price]" class="number small-txt" /> 元</span>
+    </div>
+    <div class="form-item">
+    	<label>售价：</label>
+        <span><input type="number" name="form[price]" class="number small-txt" /> 元</span>
+    </div>
+    <div class="form-item">
+    	<label>库存：</label>
+        <span><input type="number" name="form[store]" class="number small-txt" /></span>
+    </div>
+    <div class="form-item">
+    	<label>今日库存：</label>
+        <span><input type="number" name="form[today_store]" class="number small-txt" /></span>
+    </div>
+    <div class="form-item button-item">
+        <span><input type="submit" value="保存" class="button" /></span>
+    </div>
+</form>
+</div>
+<script type="text/javascript">
+jQuery(function(){
+	jQuery("#memberForm").dialog({
+		"width":300,
+	});
+});
+</script>
+</body>
+</html>

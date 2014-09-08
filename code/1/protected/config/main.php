@@ -1,0 +1,29 @@
+<?php
+
+return array(
+  'import'=>array(
+    'modules\\admin\\AdminModule',  
+  ),
+  'components'=>array(
+     'db'=>array(
+             'connectionString'=>'mysql:dbname=test;host=127.0.0.1',
+             'username'=>'root',
+             'password'=>'root',
+             'tablePrefix'=>'benben_'
+     ),
+     'log'=>array(
+                'routers'=>array(
+                    array('class'=>'benben\log\WebLogRouter') 
+                ),
+     ),
+     'user'=>array(
+             'loginUrl'=>array('account/login')
+     ),
+  	 'assetManager'=>array(
+     	'basePath'=>dirname(APPLICATION_PATH).'/public/assets',	
+     ),
+  ),
+  'modules'=>array(
+     'admin',
+  ),
+);

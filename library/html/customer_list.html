@@ -1,0 +1,365 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>顾客列表</title>
+<link rel="stylesheet" type="text/css" href="css/main.css" />
+<link rel="stylesheet" type="text/css" href="css/benben.css" />
+<script type="text/javascript" src="js/jquery.min.js"></script>
+</head>
+
+<body>
+<div id="layoutBody">
+	<div id="layoutMain">
+    	<div class="table-list customer-list">
+        	<div id="customerListHeader" class="thead">
+            	<ul>
+                	<li class="cell cell-check">&nbsp;</li>
+                	<!-- <li class="pic">缩略图</li> -->
+                	<li class="cell cell-title">顾客名称</li>
+                    <li class="cell cell-field-cost">场地费</li>
+                    <li class="cell cell-water">饮料</li>
+                    <li class="cell cell-other">其它</li>
+                    <li class="cell cell-note">备注</li>
+                    <li class="cell cell-sum cell-sum-waitpay">待付款</li>
+                    <li class="cell cell-sum">小计</li>
+                    <li class="cell cell-handler">操作</li>
+                </ul>
+                <div class="clear"></div>
+            </div>
+            <div class="tbody">
+            	<!--
+            		<div class="top-info">
+                        <span class="tip">待付款商品</span>
+                        <span class="check-all"><input type="checkbox" /> 全选</span>
+                        <span class="btn-wrap">
+                        	<a href="#" class="link add-goods">添加顾客</a>
+                        </span>
+                    </div>
+               -->
+                    <div class="item even">
+                        <ul>
+                            <li class="cell cell-check"><input type="checkbox" /></li>
+                            <!-- <li class="cell cell-member"><img src="img/default_head.jpg" /></li> -->
+                            <li class="cell cell-title">
+                                Apple
+                                <div class="flag">会员</div>
+                                <div class="balance">预存款：200 / 3</div>
+                            </li>
+                            <li class="cell cell-field-cost">扣3人</li>
+                            <li class="cell cell-water">
+                                <ul class="list">
+                                    <li><span class="goods-name">脉动</span> * <span class="amount">1</span><span class="pay">√</span></li>
+                                    <li><span class="goods-name">可乐</span> * <span class="amount">2</span></li>
+                                    <li><span class="goods-name">矿泉水</span> * <span class="amount">2</span></li>
+                                    <li><span class="goods-name">美年达</span> * <span class="amount">4</span></li>
+                                </ul>
+                            </li>
+                            <li class="cell cell-other">
+                            <ul class="list">
+                                    <li><span class="goods-name">羽毛球亚6</span> * <span class="amount">1</span></li>
+                                    <li><span class="goods-name">华腾1808线</span> * <span class="amount">2</span></li>
+                                </ul>
+                            </li>
+                            <li class="cell cell-note">备注</li>
+                            <li class="cell cell-sum cell-sum-waitpay">100.0</li>
+                            <li class="cell cell-sum">150.0</li>
+                            <li class="cell cell-handler">
+                                <a href="#" class="button link-btn">删除</a>
+                                <a href="#" class="button link-btn">编辑</a>
+                                <a href="#" class="button link-btn">结算</a>
+                            </li>
+                        </ul>
+                        <div class="clear"></div>
+                </div>
+                <div class="item odd">
+                        <ul>
+                            <li class="cell cell-check"><input type="checkbox" /></li>
+                            <!-- <li class="cell cell-member"><img src="img/default_head.jpg" /></li> -->
+                            <li class="cell cell-title">
+                                4人
+                                <div class="flag whole-field-flag">包场地</div>
+                            </li>
+                            <li class="cell cell-field-cost">80</li>
+                            <li class="cell cell-water"></li>
+                            <li class="cell cell-other"></li>
+                            <li class="cell cell-note">14:00 ~ 16:00</li>
+                            <li class="cell cell-sum cell-sum-waitpay">150.0</li>
+                            <li class="cell cell-sum">80.0</li>
+                            <li class="cell cell-handler">
+                                <a href="#" class="button link-btn">删除</a>
+                                <a href="#" class="button link-btn">编辑</a>
+                                <a href="#" class="button link-btn">结算</a>
+                            </li>
+                        </ul>
+                        <div class="clear"></div>
+                </div>
+                <div class="item odd">
+                        <ul>
+                            <li class="cell cell-check"><input type="checkbox" /></li>
+                            <!-- <li class="cell cell-member"><img src="img/default_head.jpg" /></li> -->
+                            <li class="cell cell-title">不抛弃不放弃</li>
+                            <li class="cell cell-field-cost">15</li>
+                            <li class="cell cell-water"></li>
+                            <li class="cell cell-other"></li>
+                            <li class="cell cell-note">备注</li>
+                            <li class="cell cell-sum cell-sum-waitpay">150.0</li>
+                            <li class="cell cell-sum">15.0</li>
+                            <li class="cell cell-handler">
+                                <a href="#" class="button link-btn">删除</a>
+                                <a href="#" class="button link-btn">编辑</a>
+                                <a href="#" class="button link-btn">结算</a>
+                            </li>
+                        </ul>
+                        <div class="clear"></div>
+                </div>
+                <div class="item even">
+                        <ul>
+                            <li class="cell cell-check"><input type="checkbox" /></li>
+                            <!-- <li class="cell cell-member"><img src="img/default_head.jpg" /></li> -->
+                            <li class="cell cell-title">
+                                蚂蚁<div class="flag">会员</div>
+                                <div class="balance">预存款：20</div>
+                            </li>
+                            <li class="cell cell-field-cost">15</li>
+                            <li class="cell cell-water">
+                                <ul class="list">
+                                    <li><span class="goods-name">脉动</span> * <span class="amount">1</span></li>
+                                    <li><span class="goods-name">可乐</span> * <span class="amount">2</span></li>
+                                    <li><span class="goods-name">矿泉水</span> * <span class="amount">2</span></li>
+                                    <li><span class="goods-name">美年达</span> * <span class="amount">4</span></li>
+                                </ul>
+                            </li>
+                            <li class="cell cell-other">
+                            <ul class="list">
+                                    <li><span class="goods-name">羽毛球亚6</span> * <span class="amount">1</span></li>
+                                    <li><span class="goods-name">华腾1808线</span> * <span class="amount">2</span></li>
+                                </ul>
+                            </li>
+                            <li class="cell cell-note">备注</li>
+                            <li class="cell cell-sum cell-sum-waitpay">150.0</li>
+                            <li class="cell cell-sum">150.0</li>
+                            <li class="cell cell-handler">
+                                <a href="#" class="button link-btn">删除</a>
+                                <a href="#" class="button link-btn">编辑</a>
+                                <a href="#" class="button link-btn">结算</a>
+                            </li>
+                        </ul>
+                        <div class="clear"></div>
+                </div>
+                <div class="item odd">
+                        <ul>
+                            <li class="cell cell-check"><input type="checkbox" /></li>
+                            <!-- <li class="cell cell-member"><img src="img/default_head.jpg" /></li> -->
+                            <li class="cell cell-title">
+                                路很远
+                                <div class="flag">会员</div>
+                                <div class="balance">预存款：200 / 3</div></li>
+                            <li class="cell cell-field-cost">15</li>
+                            <li class="cell cell-water">
+                                <ul class="list">
+                                    <li><span class="goods-name">脉动</span> * <span class="amount">1</span></li>
+                                    <li><span class="goods-name">可乐</span> * <span class="amount">2</span></li>
+                                    <li><span class="goods-name">矿泉水</span> * <span class="amount">2</span></li>
+                                    <li><span class="goods-name">美年达</span> * <span class="amount">4</span></li>
+                                </ul>
+                            </li>
+                            <li class="cell cell-other">
+                            <ul class="list">
+                                    <li><span class="goods-name">羽毛球亚6</span> * <span class="amount">1</span></li>
+                                    <li><span class="goods-name">华腾1808线</span> * <span class="amount">2</span></li>
+                                </ul>
+                            </li>
+                            <li class="cell cell-note">备注</li>
+                            <li class="cell cell-sum cell-sum-waitpay">150.0</li>
+                            <li class="cell cell-sum">150.0</li>
+                            <li class="cell cell-handler">
+                                <a href="#" class="button link-btn">删除</a>
+                                <a href="#" class="button link-btn">编辑</a>
+                                <a href="#" class="button link-btn">结算</a>
+                            </li>
+                        </ul>
+                        <div class="clear"></div>
+                </div>
+                <div class="item even">
+                        <ul>
+                            <li class="cell cell-check"><input type="checkbox" /></li>
+                            <!-- <li class="cell cell-member"><img src="img/default_head.jpg" /></li> -->
+                            <li class="cell cell-title">冬天姐</li>
+                            <li class="cell cell-field-cost">15</li>
+                            <li class="cell cell-water">
+                                <ul class="list">
+                                    <li><span class="goods-name">脉动</span> * <span class="amount">1</span></li>
+                                    <li><span class="goods-name">可乐</span> * <span class="amount">2</span></li>
+                                    <li><span class="goods-name">矿泉水</span> * <span class="amount">2</span></li>
+                                    <li><span class="goods-name">美年达</span> * <span class="amount">4</span></li>
+                                </ul>
+                            </li>
+                            <li class="cell cell-other">
+                            <ul class="list">
+                                    <li><span class="goods-name">羽毛球亚6</span> * <span class="amount">1</span></li>
+                                    <li><span class="goods-name">华腾1808线</span> * <span class="amount">2</span></li>
+                                </ul>
+                            </li>
+                            <li class="cell cell-note">芝兰生于深谷，不以无人而不芳 君子修身养德，不以穷困而改志</li>
+                            <li class="cell cell-sum cell-sum-waitpay">150.0</li>
+                            <li class="cell cell-sum">55.0</li>
+                            <li class="cell cell-handler">
+                                <a href="#" class="button link-btn">删除</a>
+                                <a href="#" class="button link-btn">编辑</a>
+                                <a href="#" class="button link-btn">结算</a>
+                            </li>
+                        </ul>
+                        <div class="clear"></div>
+                </div>
+                <div class="item odd">
+                        <ul>
+                            <li class="cell cell-check"><input type="checkbox" /></li>
+                            <!-- <li class="cell cell-member"><img src="img/default_head.jpg" /></li> -->
+                            <li class="cell cell-title">冬天姐</li>
+                            <li class="cell cell-field-cost">15</li>
+                            <li class="cell cell-water">
+                                <ul class="list">
+                                    <li><span class="goods-name">脉动</span> * <span class="amount">1</span></li>
+                                    <li><span class="goods-name">可乐</span> * <span class="amount">2</span></li>
+                                    <li><span class="goods-name">矿泉水</span> * <span class="amount">2</span></li>
+                                    <li><span class="goods-name">美年达</span> * <span class="amount">4</span></li>
+                                </ul>
+                            </li>
+                            <li class="cell cell-other">
+                            <ul class="list">
+                                    <li><span class="goods-name">羽毛球亚6</span> * <span class="amount">1</span></li>
+                                    <li><span class="goods-name">华腾1808线</span> * <span class="amount">2</span></li>
+                                </ul>
+                            </li>
+                            <li class="cell cell-note">芝兰生于深谷，不以无人而不芳 君子修身养德，不以穷困而改志</li>
+                            <li class="cell cell-sum cell-sum-waitpay">150.0</li>
+                            <li class="cell cell-sum">55.0</li>
+                            <li class="cell cell-handler">
+                                <a href="#" class="button link-btn">删除</a>
+                                <a href="#" class="button link-btn">编辑</a>
+                                <a href="#" class="button link-btn">结算</a>
+                            </li>
+                        </ul>
+                        <div class="clear"></div>
+                </div>
+                <div class="item even">
+                        <ul>
+                            <li class="cell cell-check"><input type="checkbox" /></li>
+                            <!-- <li class="cell cell-member"><img src="img/default_head.jpg" /></li> -->
+                            <li class="cell cell-title">冬天姐</li>
+                            <li class="cell cell-field-cost">15</li>
+                            <li class="cell cell-water">
+                                <ul class="list">
+                                    <li><span class="goods-name">脉动</span> * <span class="amount">1</span></li>
+                                    <li><span class="goods-name">可乐</span> * <span class="amount">2</span></li>
+                                    <li><span class="goods-name">矿泉水</span> * <span class="amount">2</span></li>
+                                    <li><span class="goods-name">美年达</span> * <span class="amount">4</span></li>
+                                </ul>
+                            </li>
+                            <li class="cell cell-other">
+                            <ul class="list">
+                                    <li><span class="goods-name">羽毛球亚6</span> * <span class="amount">1</span></li>
+                                    <li><span class="goods-name">华腾1808线</span> * <span class="amount">2</span></li>
+                                </ul>
+                            </li>
+                            <li class="cell cell-note">芝兰生于深谷，不以无人而不芳 君子修身养德，不以穷困而改志</li>
+                            <li class="cell cell-sum cell-sum-waitpay">150.0</li>
+                            <li class="cell cell-sum">55.0</li>
+                            <li class="cell cell-handler">
+                                <a href="#" class="button link-btn">删除</a>
+                                <a href="#" class="button link-btn">编辑</a>
+                                <a href="#" class="button link-btn">结算</a>
+                            </li>
+                        </ul>
+                        <div class="clear"></div>
+                </div>
+                <div class="item even">
+                        <ul>
+                            <li class="cell cell-check"><input type="checkbox" /></li>
+                            <!-- <li class="cell cell-member"><img src="img/default_head.jpg" /></li> -->
+                            <li class="cell cell-title">
+                                Apple
+                                <div class="flag">会员</div>
+                                <div class="balance">预存款：200 / 3</div>
+                            </li>
+                            <li class="cell cell-field-cost">扣3人</li>
+                            <li class="cell cell-water">
+                                <ul class="list">
+                                    <li><span class="goods-name">脉动</span> * <span class="amount">1</span><span class="pay">√</span></li>
+                                    <li><span class="goods-name">可乐</span> * <span class="amount">2</span></li>
+                                    <li><span class="goods-name">矿泉水</span> * <span class="amount">2</span></li>
+                                    <li><span class="goods-name">美年达</span> * <span class="amount">4</span></li>
+                                </ul>
+                            </li>
+                            <li class="cell cell-other">
+                            <ul class="list">
+                                    <li><span class="goods-name">羽毛球亚6</span> * <span class="amount">1</span></li>
+                                    <li><span class="goods-name">华腾1808线</span> * <span class="amount">2</span></li>
+                                </ul>
+                            </li>
+                            <li class="cell cell-note">备注</li>
+                            <li class="cell cell-sum cell-sum-waitpay">100.0</li>
+                            <li class="cell cell-sum">150.0</li>
+                            <li class="cell cell-handler">
+                                <a href="#" class="button link-btn">删除</a>
+                                <a href="#" class="button link-btn">编辑</a>
+                                <a href="#" class="button link-btn">结算</a>
+                            </li>
+                        </ul>
+                        <div class="clear"></div>
+                </div>
+                <div class="item odd">
+                        <ul>
+                            <li class="cell cell-check"><input type="checkbox" /></li>
+                            <!-- <li class="cell cell-member"><img src="img/default_head.jpg" /></li> -->
+                            <li class="cell cell-title">4人</li>
+                            <li class="cell cell-field-cost">60</li>
+                            <li class="cell cell-water"></li>
+                            <li class="cell cell-other"></li>
+                            <li class="cell cell-note">备注</li>
+                            <li class="cell cell-sum cell-sum-waitpay">150.0</li>
+                            <li class="cell cell-sum">5.0</li>
+                            <li class="cell cell-handler">
+                                <a href="#" class="button link-btn">删除</a>
+                                <a href="#" class="button link-btn">编辑</a>
+                                <a href="#" class="button link-btn">结算</a>
+                            </li>
+                        </ul>
+                        <div class="clear"></div>
+                </div>
+            </div>
+            <div class="tfoot">
+                <div class="links-area">
+                    <a href="#" class="link">删除选中的商品</a>
+                </div>
+                <div class="data-area">
+                    <span class="advance-wrap">预留款：<input type="text" value="20" class="advance-txt" /> 元</span>
+                    <span class="total-price-wrap">总计：<span class="money total-price" id="totalPrice">￥120.0</span></span>
+                    <span class="pay-wrap"><a href="#" class="button pay-submit-btn">付款</a></span>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="tfoot">
+            	<div class="note-area">
+                	<span>备注：</span><textarea name="form[note]" cols="50" rows="2" class="note-txt"></textarea>
+                </div>
+                <div class="data-area">
+	            	<span>总计：<span class="money total-price" id="totalPrice">￥120.0</span></span>
+    	        	<a href="#" class="button submit-btn">结算</a>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="js/benben.func.js"></script>
+<script type="text/javascript">
+jQuery(function(){
+	window.onscroll = function (){
+		toolbarShadow("customerListHeader", 10);
+	}	
+});
+</script>
+</body>
+</html>
