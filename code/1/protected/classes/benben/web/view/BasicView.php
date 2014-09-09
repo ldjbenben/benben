@@ -28,14 +28,14 @@ class BasicView extends View
 
     public function render ($template)
     {
-        $this->_layout = $this->controller->getLayout();
+        $this->_layout = $this->_owner->getLayout();
         $this->_teamplate = $template;
         ob_start();
         extract($this->_data);
         include $template;
         $content = ob_get_clean(); 
         ob_start();
-        include Benben::app()->getLayoutPath($this->_owner->_layout);
+        include Benben::app()->getLayoutPath($this->_owner->layout);
         
         return $this->processOutput( ob_get_clean() );
     }

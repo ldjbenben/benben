@@ -10,7 +10,7 @@ use benben\Benben;
  */
 class AccountController extends Controller
 {
-	protected $_layout = 'simple';
+	public $layout = 'simple';
 	
     /**
 	 * @return array action filters

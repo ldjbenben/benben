@@ -1,0 +1,31 @@
+@charset "utf-8";
+/* CSS Document */
+body{
+	margin:0px;
+	padding:0px;
+}
+a, a:visited{
+	text-decoration:none;
+}
+#top{
+	
+	height:30px;
+	border:1px #CCCCCC solid;
+}
+#bodyWrap{
+	width:100%;
+}
+#head{
+	height:50px;
+	border:1px #CCCCCC solid;
+	margin-top:5px;
+	background:rgb(170, 24, 1);
+}
+.row{
+	margin:0px 10px;
+}
+
+nav li{
+	float:left;
+	list-style-type:none;
+}

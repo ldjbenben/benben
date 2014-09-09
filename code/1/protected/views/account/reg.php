@@ -4,11 +4,7 @@ use benben\Benben;
 use benben\web\helpers\Html;
 use benben\web\helpers\JavaScriptExpression;
 ?>
-<!doctype html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>管理员登录</title>
+
 <?php 
 $cs=Benben::app()->clientScript;
 $cs->coreScriptPosition=ClientScript::POS_HEAD;
@@ -22,9 +18,6 @@ function a(form){
 	return true;
 }
 </script>
-</head>
-
-<body>
 <?php $form = $this->beginWidget('benben\\web\\widgets\\ActiveForm', array(
 		'id'=>'user-form',
 		'enableAjaxValidation'=>true,
@@ -62,5 +55,3 @@ function a(form){
  	<?php echo Html::submitButton('Enter'); ?>
   </div>
   <?php $this->endWidget(); ?>
-</body>
-</html>
