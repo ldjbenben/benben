@@ -394,4 +394,13 @@ abstract class Application extends Module
     {
     	$this->_language=$language;
     }
+    
+    /**
+     * Returns the root path of the application.
+     * @return string the root directory of the application. Defaults to 'protected'.
+     */
+    public function getBasePath()
+    {
+    	return $this->_basePath;
+    }
 }

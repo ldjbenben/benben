@@ -1,8 +1,8 @@
 <?php 
 use benben\web\ClientScript;
-use benben\Benben;
 use benben\web\helpers\Html;
 use benben\web\helpers\JavaScriptExpression;
+use benben\Benben;
 ?>
 
 <?php 
@@ -96,7 +96,7 @@ $cs->registerScriptFile($baseUrl.'public/js/jquery.tooltip-1.2.6.min.js');
                 <div class="item">
                     <label>验证码</label>
                     <input type="text" class="input-txt verify" />
-                    <img src="<?php echo $benben['assetsUrl'];?>/img/verifyhandler.png" height="34" class="verify" />
+                    <img src="<?php echo $this->_owner->createUrl('code');?>" height="34" class="verify" />
                     <a href="#" class="change-code">看不清？换一张</a>
                 </div>
                 <div class="item provision-item">

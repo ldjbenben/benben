@@ -1,6 +1,6 @@
 <?php
 
-namespace application\components;
+namespace application\components\behaviors;
 
 use benben\base\Behavior;
 

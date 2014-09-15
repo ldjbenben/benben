@@ -9,6 +9,7 @@ use benben\db\connection\DbConnection;
 use benben\base\WebConfig;
 use benben\module\Module;
 use benben\base\Application;
+use benben\base\Exception;
 
 
 /**
@@ -83,7 +84,7 @@ class WebApplication extends Application
      * </ol>
      * @param string $route 格式为'[模块ID/]控制器ID/动作ID/参数名/参数值...'
      */
-    public function runController($route)
+    public function runController($route, $owner = null)
     {
     	$route = trim($route,'/');
     	$moduleId = $route;
@@ -95,11 +96,12 @@ class WebApplication extends Application
    
     	if(($this->_module = $this->getModule($moduleId))!==null)
     	{
+    		$owner = $this->_module;
     		$route = substr($route, $pos+1);
     	}
     	else
     	{
-    		$this->_module = $this;
+    		$owner = $this;
     	}
     	
         $route = trim($route,'/');
@@ -112,7 +114,7 @@ class WebApplication extends Application
         	$route = substr($route, $pos+1);
         }
         
-    	if (($controller = $this->_module->createController($controllerId))!==null)
+    	if (($controller = $owner->createController($controllerId))!==null)
     	{
     		$this->setController($controller);
     	    $action = $this->_actionId = (string)$this->parseActionParams($route);
@@ -122,7 +124,7 @@ class WebApplication extends Application
     	else
     	{
     	    throw new HttpException(404, Benben::t('benben', 'Unable to resolve the request "{route}".',
-    	    		array('{route}'=>$controllerId==='' ? $this->_module->defaultController : $controllerId)));
+    	    		array('{route}'=>$controllerId==='' ? $owner->defaultController : $controllerId)));
     	}
     }
     
@@ -162,15 +164,57 @@ class WebApplication extends Application
     	$this->_controller=$value;
     }
     
-	public function getViewPath($controller, $action)
+	/* public function getViewPath($controller, $action)
 	{
 	    return $this->_module->basePath."/views/{$controller}/{$action}.php";
-	}
+	} */
+    /**
+     * @return string the root directory of view files. Defaults to 'protected/views'.
+     */
+    public function getViewPath()
+    {
+    	if($this->_viewPath!==null)
+    		return $this->_viewPath;
+    	else
+    		return $this->_viewPath=$this->getBasePath().DIRECTORY_SEPARATOR.'views';
+    }
+    
+    /**
+     * @param string $path the root directory of view files.
+     * @throws Exception if the directory does not exist.
+     */
+    public function setViewPath($path)
+    {
+    	if(($this->_viewPath=realpath($path))===false || !is_dir($this->_viewPath))
+    		throw new Exception(Benben::t('benben','The view path "{path}" is not a valid directory.',
+    				array('{path}'=>$path)));
+    }
 	
-	public function getLayoutPath($layout)
+	/* public function getLayoutPath($layout)
 	{
 	    return $this->_module->basePath."/views/layouts/{$layout}.php";
-	}
+	} */
+    /**
+     * @return string the root directory of layout files. Defaults to 'protected/views/layouts'.
+     */
+    public function getLayoutPath()
+    {
+    	if($this->_layoutPath!==null)
+    		return $this->_layoutPath;
+    	else
+    		return $this->_layoutPath=$this->getViewPath().DIRECTORY_SEPARATOR.'layouts';
+    }
+    
+    /**
+     * @param string $path the root directory of layout files.
+     * @throws CException if the directory does not exist.
+     */
+    public function setLayoutPath($path)
+    {
+    	if(($this->_layoutPath=realpath($path))===false || !is_dir($this->_layoutPath))
+    		throw new Exception(Benben::t('yii','The layout path "{path}" is not a valid directory.',
+    				array('{path}'=>$path)));
+    }
 	
 	public function getWidgetFactory()
 	{

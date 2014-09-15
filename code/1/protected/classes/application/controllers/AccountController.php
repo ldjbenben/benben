@@ -22,20 +22,6 @@ class AccountController extends Controller
 		);
 	}
 	
-	public function behaviors()
-	{
-		return array(
-			'a'=>array(
-				'class'=>'application\\components\\AccountBehavior',
-			),			
-		);
-	}
-	
-	public function onLogin($event)
-	{
-		$this->eventProxy->raiseEvent('onLogin', $event);
-	}
-
 	/**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter.
@@ -45,7 +31,7 @@ class AccountController extends Controller
 	{
 		return array(
 				array('allow',  // allow all users to access 'login,reg' actions.
-						'actions'=>array('login','reg'),
+						'actions'=>array('login','reg','code'),
 						'users'=>array('*'),
 				),
 				array('allow', // allow authenticated users to access all actions
@@ -57,6 +43,20 @@ class AccountController extends Controller
 		);
 	}
 	
+	public function behaviors()
+	{
+		return array(
+			'a'=>array(
+				'class'=>'application\\components\\behaviors\\ValidateCodeBehavior',
+			),			
+		);
+	}
+	
+	public function onLogin($event)
+	{
+		$this->eventProxy->raiseEvent('onLogin', $event);
+	}
+
     public function actionReg()
     {
     	$formModel = new RegFormModel();

@@ -516,4 +516,12 @@ class Controller extends BaseController
     		$this->_cachingStack=new CStack();
     	return $this->_cachingStack;
     }
+    
+    /**
+     * @return string ID of the controller
+     */
+    public function getId()
+    {
+    	return $this->_id;
+    }
 }
