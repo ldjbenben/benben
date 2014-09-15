@@ -1,0 +1,207 @@
+@charset "utf-8";
+/* CSS Document */
+.simple-main{
+	width:1000px;
+	margin:0px auto;
+}
+.register-process{
+	margin-top:20px;
+	height:35px;
+	overflow:hidden;
+}
+.register-process .process{
+	position:relative;
+	float:left;
+	background:#DDD;
+	font-size:14px;
+	width:316px;
+	line-height:35px;
+	overflow:visible;
+	padding-left:10px;
+	margin-left:10px;
+}
+.register-process .first-process{
+	margin-left:0px;
+}
+.register-process .process-current{
+	background:#f96;
+	color:#FFF;
+}
+.register-process .process-current .process-dir-outsidee{
+	background:#f96;
+}
+.register-process .process .index{
+	display:inline-block;
+	margin-right:5px;
+	text-align:center;
+	color:#FFF;
+	font-weight:bold;
+	height:18px;
+	line-height:18px;
+	width:18px;
+	background:#999;
+	border-radius:18px;
+	-webkit-border-radius:18px;
+	margin-left:15px;
+}
+.register-process .process-current .index{
+	color:#F96;
+	background:#FFF;
+}
+
+.register-process .process-dir-outside{
+	position:absolute;
+	top:-11px;
+	right:-34px;
+	display:inline-block;
+	box-sizing:border-box;
+	border-style:solid;
+	border-width:28px 20px;
+	border-color:transparent #fff transparent #ddd;
+}
+.register-process .process-current .process-dir-outside{
+	border-color:transparent transparent transparent #F96;
+}
+.register-process .process-dir-inside{
+	position:absolute;
+	top:-11px;
+	left:0px;
+	display:inline-block;
+	box-sizing:border-box;
+	border-style:solid;
+	border-width:28px 20px;
+	border-color:transparent transparent transparent #fff;
+}
+.register-info{
+	border:solid 1px #DDD;
+	margin-top:50px;
+	background:#FFF;
+}
+.register-info .title{
+	font-size:16px;
+	font-weight:normal;
+	color:#333;
+	margin:0px 10px;
+	padding:15px 10px;
+	border-bottom:solid 1px #DDD;
+}
+.register-form{
+	margin-left:260px;
+}
+.register-form .item{
+	position:relative;
+	padding:10px;
+	font-size:16px;
+}
+.register-form input{
+	font-size:16px;
+}
+.register-form .item label{
+	display:inline-block;
+	width:100px;
+	text-align:right;
+	line-height:30px;
+}
+.register-form .item .input-txt{
+	height:30px;
+	width:300px;
+}
+
+.register-form .item input.verify{
+	width:100px;
+}
+.register-form .item img.verify{
+	vertical-align:middle;
+}
+.register-form a, .register-form a:visited{
+	font-size:12px;
+	color:#2A6496;
+}
+.register-form .provision-item{
+	font-size:12px;
+	padding-left:100px;
+}
+.register-form .provision-item input{
+	vertical-align:middle;
+}
+.register-form  .next-btn-item{
+	text-align:center;
+}
+.register-form  .next-btn-item .next-step{
+	display:inline-block;
+	border:none;
+	color:#FFF;
+	font-size:16px;
+	background:#DC3C00;
+	width:300px;
+	height:44px;
+	line-height:44px;
+	cursor:pointer;
+}
+.register-form .errorMessage{
+	color:#a80000;
+}
+.password-tip .strength span{
+	display:inline-block;
+	width:40px;
+	height:6px;
+	margin-left:4px;
+	background:#DDD;
+}
+.password-tip .strength span.on{
+	background:#a82222;
+}
+.password-tip .level{
+	font-style:normal;
+}
+.tooltip-info{
+	display:none;
+	position:absolute;
+	top:10px;
+	left:430px;
+	border:solid #CCC 1px;
+	padding:10px;
+	font-size:12px;
+}
+.register-form .tooltip-info .mess{
+	color:#666;
+}
+.error .tooltip-info{
+	display:block;
+}
+.tooltip-info .icon-border{
+	position:absolute;
+	left:-20px;
+	top:7px;
+	display:inline-block;
+	box-sizing:border-box;
+	border-style:solid;
+	border-width:10px;
+	border-color:transparent #ddd transparent transparent;
+}
+.tooltip-info .icon-bg{
+	position:absolute;
+	left:-16px;
+	top:9px;
+	display:inline-block;
+	box-sizing:border-box;
+	border-style:solid;
+	border-width:8px 8px;
+	border-color:transparent #fff transparent transparent;
+}
+div.tooltip-ok{
+	border:none;
+}
+.icon-bg, div.tooltip-ok .icon-border{
+	display:none;
+}
+.tooltip-info .state{
+	display:none;
+}
+div.success .state{
+	display:inline-block;
+	width:16px;
+	height:16px;
+	background:url(../img/login-logic-icons.png) -74px 0 no-repeat;
+}
+.error .tooltip

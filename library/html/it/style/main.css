@@ -3,29 +3,218 @@
 body{
 	margin:0px;
 	padding:0px;
+	color:#000;
+	font-size:12px;
 }
 a, a:visited{
 	text-decoration:none;
+	color:#333;
+}
+ul,li{
+	margin:0px;
+	padding:0px;
+	list-style-type:none;
 }
 #top{
 	
-	height:30px;
-	border:1px #CCCCCC solid;
 }
 #bodyWrap{
-	width:100%;
+	width:90%;
+	margin:0px auto;
 }
 #head{
-	height:50px;
-	border:1px #CCCCCC solid;
-	margin-top:5px;
+	position:relative;
+	height:auto;
 	background:rgb(170, 24, 1);
 }
-.row{
-	margin:0px 10px;
+#main{
+	background:#f8f8f8;
 }
-
+.row{
+	min-width:800px;
+}
+#top:after, nav ul:after, .register-process:after{
+	content:".";
+	display:block;
+	clear:both;
+	height:0;
+	font-size:0;
+	line-height:0;
+}
+nav li:first-child{
+	border:none;
+}
 nav li{
 	float:left;
-	list-style-type:none;
+}
+nav.login-menu{
+	float:right;
+}
+nav.login-menu a{
+	display:inline-block;
+	font-size:12px;
+	padding:5px 10px;
+}
+nav.main-menu a{
+	display:inline-block;
+	padding:12px 20px;
+	border-left:solid 1px rgba(0,0,0,0.2);
+	color:#fff;
+	font-size:14px;
+}
+nav.main-menu a:hover{
+	background:#D55201;
+}
+
+#search{
+	position:absolute;
+	top:8px;
+	right:10px;
+}
+#search .keywords{
+	height:18px;
+	margin:0px;
+}
+#search .search-bar{
+	margin:0px;
+}
+
+
+/* 注册登录页样式 */
+.simple-main{
+	width:1000px;
+	margin:0px auto;
+}
+.register-process{
+	margin-top:20px;
+	height:35px;
+	overflow:hidden;
+}
+.register-process .process{
+	position:relative;
+	float:left;
+	background:#ddd;
+	font-size:14px;
+	width:316px;
+	line-height:35px;
+	overflow:visible;
+	padding-left:10px;
+	margin-left:10px;
+}
+.register-process .first-process{
+	margin-left:0px;
+}
+.register-process .process-current{
+	background:#f96;
+	color:#FFF;
+}
+.register-process .process-current .process-dir-outsidee{
+	background:#f96;
+}
+.register-process .process .index{
+	display:inline-block;
+	margin-right:5px;
+	text-align:center;
+	color:#FFF;
+	font-weight:bold;
+	height:18px;
+	line-height:18px;
+	width:18px;
+	background:#999;
+	border-radius:18px;
+	-webkit-border-radius:18px;
+	margin-left:15px;
+}
+.register-process .process-current .index{
+	color:#F96;
+	background:#FFF;
+}
+
+.register-process .process-dir-outside{
+	position:absolute;
+	top:-11px;
+	right:-34px;
+	display:inline-block;
+	box-sizing:border-box;
+	border-style:solid;
+	border-width:28px 20px;
+	border-color:transparent #fff transparent #ddd;
+}
+.register-process .process-current .process-dir-outside{
+	border-color:transparent transparent transparent #F96;
+}
+.register-process .process-dir-inside{
+	position:absolute;
+	top:-11px;
+	left:0px;
+	display:inline-block;
+	box-sizing:border-box;
+	border-style:solid;
+	border-width:28px 20px;
+	border-color:transparent transparent transparent #fff;
+}
+.register-info{
+	border:solid 1px #DDD;
+	margin-top:50px;
+}
+.register-info .title{
+	font-size:16px;
+	font-weight:normal;
+	color:#333;
+	margin:0px 10px;
+	padding:15px 10px;
+	border-bottom:solid 1px #DDD;
+}
+.register-form{
+	width:500px;
+	margin:0px auto;
+}
+.register-form .item{
+	padding:10px;
+	font-size:16px;
+}
+.register-form input{
+	font-size:16px;
+}
+.register-form .item label{
+	display:inline-block;
+	width:100px;
+	text-align:right;
+	line-height:30px;
+}
+.register-form .item .input-txt{
+	height:30px;
+	width:300px;
+}
+
+.register-form .item input.verify{
+	width:100px;
+}
+.register-form .item img.verify{
+	vertical-align:middle;
+}
+.register-form a, .register-form a:visited{
+	font-size:12px;
+	color:#2A6496;
+}
+.register-form .provision-item{
+	font-size:12px;
+	padding-left:100px;
+}
+.register-form .provision-item input{
+	vertical-align:middle;
+}
+.register-form  .next-btn-item{
+	text-align:center;
+}
+.register-form  .next-btn-item .next-step{
+	display:inline-block;
+	border:none;
+	color:#FFF;
+	font-size:16px;
+	background:#DC3C00;
+	width:300px;
+	height:44px;
+	line-height:44px;
+	cursor:pointer;
 }

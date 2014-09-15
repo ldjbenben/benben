@@ -25,7 +25,8 @@ use benben\base\Application;
 class WebApplication extends Application
 {
 	protected $_controller = null;
-	protected $_assetsUrl = '';
+	protected $_assetsUrl = 'public';
+	
 	/**
 	 * Registers the core application components.
 	 * This method overrides the parent implementation by registering additional core components.
@@ -206,5 +207,15 @@ class WebApplication extends Application
 	public function getClientScript()
 	{
 		return $this->getComponent('clientScript');
+	}
+	
+	public function getAssetsUrl()
+	{
+		return $this->_assetsUrl;
+	}
+	
+	public function setAssetsUrl($asstesUrl)
+	{
+		$this->_assetsUrl = $asstesUrl;
 	}
 }

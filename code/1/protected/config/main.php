@@ -1,6 +1,7 @@
 <?php
 
 return array(
+	'sourceLanguage'=>'zh_cn',
   'import'=>array(
     'modules\\admin\\AdminModule',  
   ),
@@ -26,4 +27,5 @@ return array(
   'modules'=>array(
      'admin',
   ),
+  'assetsUrl'=>'public',
 );

@@ -9,6 +9,7 @@ use benben\web\WebApplication;
 use benben\translation\MessageTranslation;
 use benben\translation\BenbenTranslation;
 use benben\base\Exception;
+use benben\i18n\ChoiceFormat;
 defined('BENBEN_DEBUG') or define('BENBEN_DEBUG', false);
 defined('BENBEN_TRACE_LEVEL') or define('BENBEN_TRACE_LEVEL', 1);
 defined('CLASS_PATH') or define('CLASS_PATH', APPLICATION_PATH.DIRECTORY_SEPARATOR.'classes');
@@ -76,11 +77,73 @@ class BenbenBase
      * @param message   消息标识
      * @param params  参数
      */
-    public static function t($category, $message, array $params = array())
+    /* public static function t($category, $message, array $params = array())
     {
     	$source = 'benben' == $category ? new BenbenTranslation() : new MessageTranslation();
     	
     	return $source->translate($category, $message, $params);
+    } */
+    /**
+     * Translates a message to the specified language.
+     * This method supports choice format (see {@link CChoiceFormat}),
+     * i.e., the message returned will be chosen from a few candidates according to the given
+     * number value. This feature is mainly used to solve plural format issue in case
+     * a message has different plural forms in some languages.
+     * @param string $category message category. Please use only word letters. Note, category 'yii' is
+     * reserved for Yii framework core code use. See {@link CPhpMessageSource} for
+     * more interpretation about message category.
+     * @param string $message the original message
+     * @param array $params parameters to be applied to the message using <code>strtr</code>.
+     * The first parameter can be a number without key.
+     * And in this case, the method will call {@link CChoiceFormat::format} to choose
+     * an appropriate message translation.
+     * Starting from version 1.1.6 you can pass parameter for {@link CChoiceFormat::format}
+     * or plural forms format without wrapping it with array.
+     * This parameter is then available as <code>{n}</code> in the message translation string.
+     * @param string $source which message source application component to use.
+     * Defaults to null, meaning using 'coreMessages' for messages belonging to
+     * the 'yii' category and using 'messages' for the rest messages.
+     * @param string $language the target language. If null (default), the {@link CApplication::getLanguage application language} will be used.
+     * @return string the translated message
+     * @see MessageSource
+     */
+    public static function t($category,$message,$params=array(),$source=null,$language=null)
+    {
+    	if(self::$_app!==null)
+    	{
+    		if($source===null)
+    			$source=($category==='benben'||$category==='zii')?'coreMessages':'messages';
+    		if(($source=self::$_app->getComponent($source))!==null)
+    			$message=$source->translate($category,$message,$language);
+    	}
+    	if($params===array())
+    		return $message;
+    	if(!is_array($params))
+    		$params=array($params);
+    	
+    	if(isset($params[0])) // number choice
+    	{
+    		if(strpos($message,'|')!==false)
+    		{
+    			if(strpos($message,'#')===false)
+    			{
+    				$chunks=explode('|',$message);
+    				$expressions=self::$_app->getLocale($language)->getPluralRules();
+    				if($n=min(count($chunks),count($expressions)))
+    				{
+    					for($i=0;$i<$n;$i++)
+    						$chunks[$i]=$expressions[$i].'#'.$chunks[$i];
+    
+    						$message=implode('|',$chunks);
+    				}
+    			}
+    			$message=ChoiceFormat::format($message,$params[0]);
+    		}
+    		if(!isset($params['{n}']))
+    				$params['{n}']=$params[0];
+    				unset($params[0]);
+    	}
+    	return $params!==array() ? strtr($message,$params) : $message;
     }
     
     /**

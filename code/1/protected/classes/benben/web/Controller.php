@@ -17,6 +17,7 @@ use benben\collections\CStack;
 /** 
  * @author benben
  * @property View $view
+ * @property Module $module
  */
 class Controller extends BaseController
 {

@@ -36,7 +36,8 @@ abstract class Application extends Module
      * 当前地区,取值为地区的缩写如中国为zh_cn,英国为en
      * @var string
      */
-    protected $_locale = 'zh_cn';
+    public $sourceLanguage = 'zh_cn';
+    private $_language;
     private $_components = array();
     private $_componentConfig=array();
     private $_modules = array();
@@ -73,6 +74,11 @@ abstract class Application extends Module
     protected function registerCoreComponents()
     {
         $components=array(
+        		'coreMessages'=>array(
+        				'class'=>'benben\\i18n\\PhpMessageSource',
+        				'language'=>'en_us',
+        				'basePath'=>BENBEN_PATH.DIRECTORY_SEPARATOR.'messages',
+        		),
                 'db'=>array(
                 		'class'=>'benben\db\DbConnection',
                 ),
@@ -361,5 +367,31 @@ abstract class Application extends Module
     		$this->onEndRequest(new Event($this));
     	if($exit)
     		exit($status);
+    }
+    
+    /**
+     * Returns the language that the user is using and the application should be targeted to.
+     * @return string the language that the user is using and the application should be targeted to.
+     * Defaults to the {@link sourceLanguage source language}.
+     */
+    public function getLanguage()
+    {
+    	return $this->_language===null ? $this->sourceLanguage : $this->_language;
+    }
+    
+    /**
+     * Specifies which language the application is targeted to.
+     *
+     * This is the language that the application displays to end users.
+     * If set null, it uses the {@link sourceLanguage source language}.
+     *
+     * Unless your application needs to support multiple languages, you should always
+     * set this language to null to maximize the application's performance.
+     * @param string $language the user language (e.g. 'en_US', 'zh_CN').
+     * If it is null, the {@link sourceLanguage} will be used.
+     */
+    public function setLanguage($language)
+    {
+    	$this->_language=$language;
     }
 }

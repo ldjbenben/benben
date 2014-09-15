@@ -11,7 +11,6 @@ require_once ('ITranslation.php');
  */
 class BenbenTranslation implements ITranslation
 {
-
 	/**
 	 * 
 	 * @param category

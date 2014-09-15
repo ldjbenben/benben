@@ -23,6 +23,9 @@ class BasicView extends View
 	
     public function setData($data)
     {
+    	$data['benben'] = array(
+			'assetsUrl'=>$this->_owner->module->getAssetsUrl(),    		
+    	);
     	$this->_data = $data;
     }
 
