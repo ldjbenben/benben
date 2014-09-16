@@ -262,4 +262,30 @@ class WebApplication extends Application
 	{
 		$this->_assetsUrl = $asstesUrl;
 	}
+	
+	/**
+	 * @return ThemeManager the theme manager.
+	 */
+	public function getThemeManager()
+	{
+		return $this->getComponent('themeManager');
+	}
+	
+	/**
+	 * @return Theme the theme used currently. Null if no theme is being used.
+	 */
+	public function getTheme()
+	{
+		if(is_string($this->_theme))
+			$this->_theme=$this->getThemeManager()->getTheme($this->_theme);
+		return $this->_theme;
+	}
+	
+	/**
+	 * @param string $value the theme name
+	 */
+	public function setTheme($value)
+	{
+		$this->_theme=$value;
+	}
 }

@@ -89,7 +89,7 @@ class BenbenBase
      * i.e., the message returned will be chosen from a few candidates according to the given
      * number value. This feature is mainly used to solve plural format issue in case
      * a message has different plural forms in some languages.
-     * @param string $category message category. Please use only word letters. Note, category 'yii' is
+     * @param string $category message category. Please use only word letters. Note, category 'benben' is
      * reserved for Yii framework core code use. See {@link CPhpMessageSource} for
      * more interpretation about message category.
      * @param string $message the original message
@@ -102,7 +102,7 @@ class BenbenBase
      * This parameter is then available as <code>{n}</code> in the message translation string.
      * @param string $source which message source application component to use.
      * Defaults to null, meaning using 'coreMessages' for messages belonging to
-     * the 'yii' category and using 'messages' for the rest messages.
+     * the 'benben' category and using 'messages' for the rest messages.
      * @param string $language the target language. If null (default), the {@link CApplication::getLanguage application language} will be used.
      * @return string the translated message
      * @see MessageSource
@@ -116,6 +116,7 @@ class BenbenBase
     		if(($source=self::$_app->getComponent($source))!==null)
     			$message=$source->translate($category,$message,$language);
     	}
+    	
     	if($params===array())
     		return $message;
     	if(!is_array($params))

@@ -54,6 +54,7 @@ class Component
 					return call_user_func_array(array($object,$name),$parameters);
 			}
 		}
+		
 		// 匿名函数是一个比较新的功能，作用也不是太大，暂时不使用
 		/* if(class_exists('Closure', false) && $this->canGetProperty($name) && $this->$name instanceof Closure)
 			return call_user_func_array($this->$name, $parameters); */

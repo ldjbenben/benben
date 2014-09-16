@@ -87,7 +87,9 @@ abstract class MessageSource extends ApplicationComponent
 		if($language===null)
 			$language=Benben::app()->getLanguage();
 		if($this->forceTranslation || $language!==$this->getLanguage())
+		{
 			return $this->translateMessage($category,$message,$language);
+		}
 		else
 			return $message;
 	}
@@ -105,17 +107,25 @@ abstract class MessageSource extends ApplicationComponent
 	{
 		$key=$language.'.'.$category;
 		if(!isset($this->_messages[$key]))
-			$this->_messages[$key]=$this->loadMessages($category,$language);
-		if(isset($this->_messages[$key][$message]) && $this->_messages[$key][$message]!=='')
-			return $this->_messages[$key][$message];
-		else if($this->hasEventHandler('onMissingTranslation'))
 		{
+			$this->_messages[$key]=$this->loadMessages($category,$language);
+		}
+		if(isset($this->_messages[$key][$message]) && $this->_messages[$key][$message]!=='')
+		{
+			if(strpos($message, '{class} and its behaviors do not have')!==false){return 8;}
+			return $this->_messages[$key][$message];
+		}
+		else if($this->getEventProxy()->hasEventHandler('onMissingTranslation'))
+		{
+			if(strpos($message, '{class} and its behaviors do not have')!==false){return 8;}
 			$event=new MissingTranslationEvent($this,$category,$message,$language);
 			$this->onMissingTranslation($event);
 			return $event->message;
 		}
 		else
+		{
 			return $message;
+		}
 	}
 
 	/**
