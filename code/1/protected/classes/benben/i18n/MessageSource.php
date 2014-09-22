@@ -51,7 +51,7 @@ abstract class MessageSource extends ApplicationComponent
 
 	/**
 	 * @return string the language that the source messages are written in.
-	 * Defaults to {@link CApplication::language application language}.
+	 * Defaults to {@link Application::language application language}.
 	 */
 	public function getLanguage()
 	{
@@ -86,12 +86,15 @@ abstract class MessageSource extends ApplicationComponent
 	{
 		if($language===null)
 			$language=Benben::app()->getLanguage();
+		
 		if($this->forceTranslation || $language!==$this->getLanguage())
 		{
 			return $this->translateMessage($category,$message,$language);
 		}
 		else
+		{
 			return $message;
+		}
 	}
 
 	/**

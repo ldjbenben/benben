@@ -112,7 +112,7 @@ class BenbenBase
     	if(self::$_app!==null)
     	{
     		if($source===null)
-    			$source=($category==='benben'||$category==='zii')?'coreMessages':'messages';
+    			$source=($category==='benben'||$category==='zii') ? 'coreMessages':'messages';
     		if(($source=self::$_app->getComponent($source))!==null)
     			$message=$source->translate($category,$message,$language);
     	}

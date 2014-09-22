@@ -11,16 +11,20 @@ class RegFormModel extends FormModel
 	public $password;
 	public $password2;
 	public $email;
+	public $verifyCode;
 	
 	public function rules()
 	{
 		return array(
 	       array('username,email,password,password2', 'required'),
 	       array('username', 'length', 'min'=>3, 'max'=>12),
+		   array('username', 'unique', 'className'=>'application\\models\\UserModel', 'attributeName'=>'username'),
 		   array('password', 'length', 'min'=>6, 'max'=>20),
 	       array('password', 'compare', 'compareAttribute'=>'password2'),
 	       array('password', 'authenticate', 'on'=>'login'),
 		   array('email', 'email'),
+		   array('email', 'unique', 'className'=>'application\\models\\UserModel', 'attributeName'=>'email'),
+		   array('verifyCode', 'application\\components\\validators\\VerifyCodeValidator'),
 	   );
 	}
 	

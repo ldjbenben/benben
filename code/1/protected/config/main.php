@@ -6,11 +6,14 @@ return array(
     'modules\\admin\\AdminModule',  
   ),
   'components'=>array(
+  	'messages'=>array(
+  		'language'=>'en_us',
+ 	 ),
      'db'=>array(
-             'connectionString'=>'mysql:dbname=test;host=127.0.0.1',
+             'connectionString'=>'mysql:dbname=apidoc;host=127.0.0.1',
              'username'=>'root',
-             'password'=>'root',
-             'tablePrefix'=>'benben_'
+             'password'=>'benben',
+             'tablePrefix'=>'apidoc_'
      ),
      'log'=>array(
                 'routers'=>array(

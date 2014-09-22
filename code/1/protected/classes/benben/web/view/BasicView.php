@@ -20,37 +20,35 @@ class BasicView extends View
 	private $_cachingStack;
 	protected $_widgets;
 	protected $_widgetStack;
+	public $fileExtension = '.php';
 	
     public function setData($data)
     {
-    	$data['benben'] = array(
-			'assetsUrl'=>$this->_owner->module->getAssetsUrl(),    		
-    	);
     	$this->_data = $data;
     }
 
-    public function render ($template)
+    public function render ($viewFile, $layoutFile = '')
     {
         $this->_layout = $this->_owner->getLayout();
-        $this->_teamplate = $template;
+        $this->_teamplate = $viewFile;
         ob_start();
         extract($this->_data);
-        include $template;
-        $content = ob_get_clean(); 
+        include $viewFile;
+        $output = ob_get_clean(); 
         ob_start();
-        
-        if(($layoutFile=$this->getLayoutFile($this->_layout))!==false)
+       
+        if(!empty($layoutFile))
         	$output=$this->renderFile($layoutFile,array('content'=>$output),true);
         
-        return $this->processOutput( ob_get_clean() );
+        return $this->processOutput( $output );
     }
     
-    public function renderPartial ($template)
+    public function renderPartial ($viewFile)
     {
-    	$this->_teamplate = $template;
+    	$this->_viewFile = $viewFile;
     	ob_start();
     	extract($this->_data);
-    	include $template;
+    	include $viewFile;
     	
     	return $this->processOutput( ob_get_clean() );
     }
@@ -103,131 +101,6 @@ class BasicView extends View
     	}
     	else
     		require($_viewFile_);
-    }
-    
-    /**
-     * Looks for the layout view script based on the layout name.
-     *
-     * The layout name can be specified in one of the following ways:
-     *
-     * <ul>
-     * <li>layout is false: returns false, meaning no layout.</li>
-     * <li>layout is null: the currently active module's layout will be used. If there is no active module,
-     * the application's layout will be used.</li>
-     * <li>a regular view name.</li>
-     * </ul>
-     *
-     * The resolution of the view file based on the layout view is similar to that in {@link getViewFile}.
-     * In particular, the following rules are followed:
-     *
-     * Otherwise, this method will return the corresponding view file based on the following criteria:
-     * <ul>
-     * <li>When a theme is currently active, this method will call {@link CTheme::getLayoutFile} to determine
-     * which view file should be returned.</li>
-     * <li>absolute view within a module: the view name starts with a single slash '/'.
-     * In this case, the view will be searched for under the currently active module's view path.
-     * If there is no active module, the view will be searched for under the application's view path.</li>
-     * <li>absolute view within the application: the view name starts with double slashes '//'.
-     * In this case, the view will be searched for under the application's view path.
-     * This syntax has been available since version 1.1.3.</li>
-     * <li>aliased view: the view name contains dots and refers to a path alias.
-     * The view file is determined by calling {@link BenbenBase::getPathOfAlias()}. Note that aliased views
-     * cannot be themed because they can refer to a view file located at arbitrary places.</li>
-     * <li>relative view: otherwise. Relative views will be searched for under the currently active
-     * module's layout path. In case when there is no active module, the view will be searched for
-     * under the application's layout path.</li>
-     * </ul>
-     *
-     * After the view file is identified, this method may further call {@link CApplication::findLocalizedFile}
-     * to find its localized version if internationalization is needed.
-     *
-     * @param mixed $layoutName layout name
-     * @return string the view file for the layout. False if the view file cannot be found
-     */
-    public function getLayoutFile($layoutName)
-    {
-    	if($layoutName===false)
-    		return false;
-    	if(($theme=Benben::app()->getTheme())!==null && ($layoutFile=$theme->getLayoutFile($this,$layoutName))!==false)
-    		return $layoutFile;
-    	
-    	if(empty($layoutName))
-    	{
-    		$module=$this->_owner->getModule();
-    		while($module!==null)
-    		{
-    			if($module->layout===false)
-    				return false;
-    			if(!empty($module->layout))
-    				break;
-    			$module=$module->getParentModule();
-    		}
-    		if($module===null)
-    			$module=Benben::app();
-    		$layoutName=$module->layout;
-    	}
-    	else if(($module=$this->_owner->getModule())===null)
-    		$module=Benben::app();
-    	
-    	return $this->resolveViewFile($layoutName,$module->getLayoutPath(),Benben::app()->getViewPath(),$module->getViewPath());
-    }
-    
-    /**
-     * Finds a view file based on its name.
-     * The view name can be in one of the following formats:
-     * <ul>
-     * <li>absolute view within a module: the view name starts with a single slash '/'.
-     * In this case, the view will be searched for under the currently active module's view path.
-     * If there is no active module, the view will be searched for under the application's view path.</li>
-     * <li>absolute view within the application: the view name starts with double slashes '//'.
-     * In this case, the view will be searched for under the application's view path.
-     * This syntax has been available since version 1.1.3.</li>
-     * <li>aliased view: the view name contains dots and refers to a path alias.
-     * The view file is determined by calling {@link BenbenBase::getPathOfAlias()}. Note that aliased views
-     * cannot be themed because they can refer to a view file located at arbitrary places.</li>
-     * <li>relative view: otherwise. Relative views will be searched for under the currently active
-     * controller's view path.</li>
-     * </ul>
-     * For absolute view and relative view, the corresponding view file is a PHP file
-     * whose name is the same as the view name. The file is located under a specified directory.
-     * This method will call {@link CApplication::findLocalizedFile} to search for a localized file, if any.
-     * @param string $viewName the view name
-     * @param string $viewPath the directory that is used to search for a relative view name
-     * @param string $basePath the directory that is used to search for an absolute view name under the application
-     * @param string $moduleViewPath the directory that is used to search for an absolute view name under the current module.
-     * If this is not set, the application base view path will be used.
-     * @return mixed the view file path. False if the view file does not exist.
-     */
-    public function resolveViewFile($viewName,$viewPath,$basePath,$moduleViewPath=null)
-    {
-    	if(empty($viewName))
-    		return false;
-    
-    	if($moduleViewPath===null)
-    		$moduleViewPath=$basePath;
-    
-    	if(($renderer=Benben::app()->getViewRenderer())!==null)
-    		$extension=$renderer->fileExtension;
-    	else
-    		$extension='.php';
-    	if($viewName[0]==='/')
-    	{
-    		if(strncmp($viewName,'//',2)===0)
-    			$viewFile=$basePath.$viewName;
-    		else
-    			$viewFile=$moduleViewPath.$viewName;
-    	}
-    	else if(strpos($viewName,'.'))
-    		$viewFile=Benben::getPathOfAlias($viewName);
-    	else
-    		$viewFile=$viewPath.DIRECTORY_SEPARATOR.$viewName;
-    
-    	if(is_file($viewFile.$extension))
-    		return Benben::app()->findLocalizedFile($viewFile.$extension);
-    	else if($extension!=='.php' && is_file($viewFile.'.php'))
-    		return Benben::app()->findLocalizedFile($viewFile.'.php');
-    	else
-    		return false;
     }
     
     /**

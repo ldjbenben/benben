@@ -1,12 +1,46 @@
 @charset "utf-8";
 /* CSS Document */
+html{
+	font-size: 62.5%;
+}
 body{
 	margin:0px;
 	padding:0px;
-	color:#000;
 	font-size:12px;
+	color:#000;
 	background:#F8F8F8;
+	font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
 }
+h1,
+.h1 {
+  font-size: 36px;
+}
+
+h2,
+.h2 {
+  font-size: 30px;
+}
+
+h3,
+.h3 {
+  font-size: 24px;
+}
+
+h4,
+.h4 {
+  font-size: 18px;
+}
+
+h5,
+.h5 {
+  font-size: 14px;
+}
+
+h6,
+.h6 {
+  font-size: 12px;
+}
+
 a, a:visited{
 	text-decoration:none;
 	color:#333;
@@ -15,6 +49,8 @@ ul,li{
 	margin:0px;
 	padding:0px;
 	list-style-type:none;
+}
+#main{
 }
 #top{
 	

@@ -3,6 +3,7 @@
 namespace application\controllers;
 
 use application\components\ValidateCode;
+use benben\Benben;
 
 class VerifyController extends Controller 
 {
@@ -41,5 +42,6 @@ class VerifyController extends Controller
 	{
 		$valiateCode = new ValidateCode();
 		$valiateCode->getImg();
+		Benben::app()->session->add('verifyCode', $valiateCode->getCode());
 	}
 }

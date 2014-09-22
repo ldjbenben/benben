@@ -4,6 +4,7 @@ namespace application\models;
 
 use benben\web\FormModel;
 use application\components\UserIdentity;
+use benben\Benben;
 
 class LoginFormModel extends FormModel
 {
@@ -14,9 +15,7 @@ class LoginFormModel extends FormModel
 	{
 		return array(
 	       array('username,password', 'required'),
-	      // array('username', 'length', 'min'=>3, 'max'=>12),
-	       //array('password', 'compare', 'compareAttribute'=>'password2', 'on'=>'register'),
-	       array('password', 'authenticate', 'on'=>'login'),
+	       array('password', 'authenticate'),
 	   );
 	}
 	
@@ -27,8 +26,12 @@ class LoginFormModel extends FormModel
 	public function authenticate($attribute,$params)
 	{
 		$identity=new UserIdentity($this->username,$this->password);
+		
 		if(!$identity->authenticate())
-			$this->addError('password','Incorrect username or password.');
+		{
+			$this->addError('password', Benben::t('message', 'Incorrect username or password.'));
+		}
+		
 	}
 
 }

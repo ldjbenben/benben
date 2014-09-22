@@ -10,6 +10,8 @@ use benben\Benben;
 use benben\db\DbCriteria;
 
 use benben\base\Model;
+use benben\base\ModelEvent;
+use benben\base\Event;
 
 abstract class ActiveRecord extends Model
 {
@@ -25,21 +27,36 @@ abstract class ActiveRecord extends Model
     
     private static $_models = array();
     
+    /**
+     * @var ActiveRecordMetaData
+     */
+    private $_md;
+    private $_new=false;						// whether this instance is new or not
     protected $_table;
     private $_attributes=array();				// attribute name => attribute value
     private $_related=array();					// attribute name => related objects
     private $_c;								// query criteria (used by finder only)
     private $_pk;								// old primary key value
     private $_alias='t';						// the table alias being used for query
-    /**
-     * @var ActiveRecordMetaData
-     */
-    private $_md = null;
     
-    public function __construct()
-    {
-        //$this->initOrm();
-    }
+	/**
+	 * Constructor.
+	 * @param string $scenario scenario name. See {@link Model::scenario} for more details about this parameter.
+	 */
+	public function __construct($scenario='insert')
+	{
+		if($scenario===null) // internally used by populateRecord() and model()
+			return;
+
+		$this->setScenario($scenario);
+		$this->setIsNewRecord(true);
+		$this->_attributes=$this->getMetaData()->attributeDefaults;
+
+		$this->init();
+
+		$this->getBehaviorProxy()->attachBehaviors($this->behaviors());
+		$this->afterConstruct();
+	}
     
     /**
      * Initializes this model.
@@ -53,34 +70,147 @@ abstract class ActiveRecord extends Model
     }
     
     /**
-     * Returns the static model of the specified AR class.
-     * The model returned is a static instance of the AR class.
-     * @param string $className active record class name.
-     * @return ActiveRecord active record model instance
+     * PHP getter magic method.
+     * This method is overridden so that AR attributes can be accessed like properties.
+     * @param string $name property name
+     * @return mixed property value
+     * @see getAttribute
      */
-    public static function model($className=__CLASS__)
+    public function __get($name)
     {
-        if(isset(self::$_models[$className]))
-        {
+    	if(isset($this->_attributes[$name]))
+    		return $this->_attributes[$name];
+    	elseif(isset($this->getMetaData()->columns[$name]))
+    		return null;
+    	elseif(isset($this->_related[$name]))
+    		return $this->_related[$name];
+    	elseif(isset($this->getMetaData()->relations[$name]))
+    		return $this->getRelated($name);
+    	else
+    		return parent::__get($name);
+    }
+    
+    /**
+     * PHP setter magic method.
+     * This method is overridden so that AR attributes can be accessed like properties.
+     * @param string $name property name
+     * @param mixed $value property value
+     */
+    public function __set($name,$value)
+    {
+    	if($this->setAttribute($name,$value)===false)
+    	{
+    		if(isset($this->getMetaData()->relations[$name]))
+    			$this->_related[$name]=$value;
+    		else
+    			parent::__set($name,$value);
+    	}
+    }
+    
+    /**
+     * Checks if a property value is null.
+     * This method overrides the parent implementation by checking
+     * if the named attribute is null or not.
+     * @param string $name the property name or the event name
+     * @return boolean whether the property value is null
+     */
+    public function __isset($name)
+    {
+    	if(isset($this->_attributes[$name]))
+    		return true;
+    	elseif(isset($this->getMetaData()->columns[$name]))
+    		return false;
+    	elseif(isset($this->_related[$name]))
+    		return true;
+    	elseif(isset($this->getMetaData()->relations[$name]))
+    		return $this->getRelated($name)!==null;
+    	else
+    		return parent::__isset($name);
+    }
+    
+    /**
+     * Sets a component property to be null.
+     * This method overrides the parent implementation by clearing
+     * the specified attribute value.
+     * @param string $name the property name or the event name
+     */
+    public function __unset($name)
+    {
+    	if(isset($this->getMetaData()->columns[$name]))
+    		unset($this->_attributes[$name]);
+    	elseif(isset($this->getMetaData()->relations[$name]))
+    		unset($this->_related[$name]);
+    	else
+    		parent::__unset($name);
+    }
+    
+	/**
+	 * Returns the static model of the specified AR class.
+	 * The model returned is a static instance of the AR class.
+	 * It is provided for invoking class-level methods (something similar to static class methods.)
+	 *
+	 * EVERY derived AR class must override this method as follows,
+	 * <pre>
+	 * public static function model($className=__CLASS__)
+	 * {
+	 *     return parent::model($className);
+	 * }
+	 * </pre>
+	 *
+	 * @param string $className active record class name.
+	 * @return ActiveRecord active record model instance.
+	 */
+	public static function model($className=__CLASS__)
+	{
+		if(isset(self::$_models[$className]))
 			return self::$_models[$className];
-        }
 		else
 		{
-		    $model = self::$_models[$className] = new $className();
-		    $model->_md=new ActiveRecordMetaData($model);
+			$model=self::$_models[$className]=new $className(null);
+			$model->_md=new ActiveRecordMetaData($model);
+			return $model;
 		}
-		return $model;
-    }
+	}
     
     public function tableName()
     {
         return get_class($this);
     }
     
-    public function getAttributes()
-    {
-        return $this->_attributes;
-    }
+	/**
+	 * Returns all column attribute values.
+	 * Note, related objects are not returned.
+	 * @param mixed $names names of attributes whose value needs to be returned.
+	 * If this is true (default), then all attribute values will be returned, including
+	 * those that are not loaded from DB (null will be returned for those attributes).
+	 * If this is null, all attributes except those that are not loaded from DB will be returned.
+	 * @return array attribute values indexed by attribute names.
+	 */
+	public function getAttributes($names=true)
+	{
+		$attributes=$this->_attributes;
+		foreach($this->getMetaData()->columns as $name=>$column)
+		{
+			if(property_exists($this,$name))
+				$attributes[$name]=$this->$name;
+			elseif($names===true && !isset($attributes[$name]))
+				$attributes[$name]=null;
+		}
+		if(is_array($names))
+		{
+			$attrs=array();
+			foreach($names as $name)
+			{
+				if(property_exists($this,$name))
+					$attrs[$name]=$this->$name;
+				else
+					$attrs[$name]=isset($attributes[$name])?$attributes[$name]:null;
+			}
+			return $attrs;
+		}
+		else
+			return $attributes;
+	}
     
     public function getRules()
     {
@@ -199,7 +329,7 @@ abstract class ActiveRecord extends Model
      */
     public function findBySql($sql,$params=array())
     {
-    	Benben::trace(get_class($this).'.findBySql()','benben.db.ar.CActiveRecord');
+    	Benben::trace(get_class($this).'.findBySql()','benben.db.ar.ActiveRecord');
     	$this->beforeFind();
     	
     	$command=$this->getCommandBuilder()->createSqlCommand($sql,$params);
@@ -214,7 +344,7 @@ abstract class ActiveRecord extends Model
 	 */
 	public function findAllBySql($sql,$params=array())
 	{
-		Benben::trace(get_class($this).'.findAllBySql()','benben.db.ar.CActiveRecord');
+		Benben::trace(get_class($this).'.findAllBySql()','benben.db.ar.ActiveRecord');
 		$this->beforeFind();
 		$command=$this->getCommandBuilder()->createSqlCommand($sql,$params);
 		return $command->queryAll();
@@ -232,20 +362,47 @@ abstract class ActiveRecord extends Model
     	$this->applyScopes($criteria);
     	$this->beforeFind($criteria);
     
-    	/* if(empty($criteria->with))
-    	{ */
+    	if(empty($criteria->with))
+    	{
     		if(!$all)
     			$criteria->limit=1;
     		$command=$this->getCommandBuilder()->createFindCommand($this->getTableSchema(),$criteria);
     		return $all ? $command->queryAll() : $command->queryRow();
-//     	}
-    	/* else
+    	}
+    	else
     	{
-    		$finder=new CActiveFinder($this,$criteria->with);
+    		$finder=new ActiveFinder($this,$criteria->with);
     		return $finder->query($criteria,$all);
-    	} */
+    	}
     }
     
+    /**
+     * Checks whether there is row satisfying the specified condition.
+     * See {@link find()} for detailed explanation about $condition and $params.
+     * @param mixed $condition query condition or criteria.
+     * @param array $params parameters to be bound to an SQL statement.
+     * @return boolean whether there is row satisfying the specified condition.
+     */
+    public function exists($condition='',$params=array())
+    {
+    	Benben::trace(get_class($this).'.exists()','system.db.ar.CActiveRecord');
+    	$builder=$this->getCommandBuilder();
+    	$criteria=$builder->createCriteria($condition,$params);
+    	$table=$this->getTableSchema();
+    	$criteria->select='1';
+    	$criteria->limit=1;
+    	$this->applyScopes($criteria);
+    
+    	if(empty($criteria->with))
+    		return $builder->createFindCommand($table,$criteria)->queryRow()!==false;
+    	else
+    	{
+    		$criteria->select='*';
+    		$finder=new ActiveFinder($this,$criteria->with);
+    		return $finder->count($criteria)>0;
+    	}
+    }
+        
     /**
      * Finds the number of rows satisfying the specified query condition.
      * See {@link find()} for detailed explanation about $condition and $params.
@@ -529,24 +686,25 @@ abstract class ActiveRecord extends Model
     }
     
     /**
-     * Returns the table alias to be used by the find methods.
-     * In relational queries, the returned table alias may vary according to
-     * the corresponding relation declaration. Also, the default table alias
-     * set by {@link setTableAlias} may be overridden by the applied scopes.
-     * @param boolean $quote whether to quote the alias name
-     * @param boolean $checkScopes whether to check if a table alias is defined in the applied scopes so far.
-     * This parameter must be set false when calling this method in {@link defaultScope}.
-     * An infinite loop would be formed otherwise.
-     * @return string the default table alias
-     */
-    public function getTableAlias($quote=false, $checkScopes=true)
-    {
-    	if($checkScopes && ($criteria=$this->getDbCriteria(false))!==null && $criteria->alias!='')
-    		$alias=$criteria->alias;
-    	else
-    		$alias=$this->_alias;
-    	return $quote ? $this->getDbConnection()->getSchema()->quote($alias) : $alias;
-    }
+	 * Returns the table alias to be used by the find methods.
+	 * In relational queries, the returned table alias may vary according to
+	 * the corresponding relation declaration. Also, the default table alias
+	 * set by {@link setTableAlias} may be overridden by the applied scopes.
+	 * @param boolean $quote whether to quote the alias name
+	 * @param boolean $checkScopes whether to check if a table alias is defined in the applied scopes so far.
+	 * This parameter must be set false when calling this method in {@link defaultScope}.
+	 * An infinite loop would be formed otherwise.
+	 * @return string the default table alias
+	 * @since 1.1.1
+	 */
+	public function getTableAlias($quote=false, $checkScopes=true)
+	{
+		if($checkScopes && ($criteria=$this->getDbCriteria(false))!==null && $criteria->alias!='')
+			$alias=$criteria->alias;
+		else
+			$alias=$this->_alias;
+		return $quote ? $this->getDbConnection()->getSchema()->quoteTableName($alias) : $alias;
+	}
     
     /**
      * Returns the metadata of the table that this AR belongs to
@@ -671,6 +829,25 @@ abstract class ActiveRecord extends Model
     }
     
     /**
+     * Returns the named attribute value.
+     * If this is a new record and the attribute is not set before,
+     * the default column value will be returned.
+     * If this record is the result of a query and the attribute is not loaded,
+     * null will be returned.
+     * You may also use $this->AttributeName to obtain the attribute value.
+     * @param string $name the attribute name
+     * @return mixed the attribute value. Null if the attribute is not set or does not exist.
+     * @see hasAttribute
+     */
+    public function getAttribute($name)
+    {
+    	if(property_exists($this,$name))
+    		return $this->$name;
+    	elseif(isset($this->_attributes[$name]))
+    		return $this->_attributes[$name];
+    }
+    
+    /**
      * Sets the named attribute value.
      * You may also use $this->AttributeName to set the attribute value.
      * @param string $name the attribute name
@@ -682,11 +859,117 @@ abstract class ActiveRecord extends Model
     {
     	if(property_exists($this,$name))
     		$this->$name=$value;
-    	else if(isset($this->getMetaData()->columns[$name]))
+    	elseif(isset($this->getMetaData()->columns[$name]))
     		$this->_attributes[$name]=$value;
     	else
     		return false;
     	return true;
+    }
+    
+    /**
+     * Inserts a row into the table based on this active record attributes.
+     * If the table's primary key is auto-incremental and is null before insertion,
+     * it will be populated with the actual value after insertion.
+     * Note, validation is not performed in this method. You may call {@link validate} to perform the validation.
+     * After the record is inserted to DB successfully, its {@link isNewRecord} property will be set false,
+     * and its {@link scenario} property will be set to be 'update'.
+     * @param array $attributes list of attributes that need to be saved. Defaults to null,
+     * meaning all attributes that are loaded from DB will be saved.
+     * @return boolean whether the attributes are valid and the record is inserted successfully.
+     * @throws DbException if the record is not new
+     */
+    public function insert($attributes=null)
+    {
+    	if(!$this->getIsNewRecord())
+    		throw new DbException(Benben::t('benben','The active record cannot be inserted to database because it is not new.'));
+    	if($this->beforeSave())
+    	{
+    		Benben::trace(get_class($this).'.insert()','system.db.ar.ActiveRecord');
+    		$builder=$this->getCommandBuilder();
+    		$table=$this->getMetaData()->tableSchema;
+    		$command=$builder->createInsertCommand($table,$this->getAttributes($attributes));
+    		if($command->execute())
+    		{
+    			$primaryKey=$table->primaryKey;
+    			if($table->sequenceName!==null)
+    			{
+    				if(is_string($primaryKey) && $this->$primaryKey===null)
+    					$this->$primaryKey=$builder->getLastInsertID($table);
+    				elseif(is_array($primaryKey))
+    				{
+    					foreach($primaryKey as $pk)
+    					{
+    						if($this->$pk===null)
+    						{
+    							$this->$pk=$builder->getLastInsertID($table);
+    							break;
+    						}
+    					}
+    				}
+    			}
+    			$this->_pk=$this->getPrimaryKey();
+    			$this->afterSave();
+    			$this->setIsNewRecord(false);
+    			$this->setScenario('update');
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
+    /**
+     * Returns if the current record is new.
+     * @return boolean whether the record is new and should be inserted when calling {@link save}.
+     * This property is automatically set in constructor and {@link populateRecord}.
+     * Defaults to false, but it will be set to true if the instance is created using
+     * the new operator.
+     */
+    public function getIsNewRecord()
+    {
+    	return $this->_new;
+    }
+    
+    /**
+     * Sets if the record is new.
+     * @param boolean $value whether the record is new and should be inserted when calling {@link save}.
+     * @see getIsNewRecord
+     */
+    public function setIsNewRecord($value)
+    {
+    	$this->_new=$value;
+    }
+    
+    /**
+     * This method is invoked before saving a record (after validation, if any).
+     * The default implementation raises the {@link onBeforeSave} event.
+     * You may override this method to do any preparation work for record saving.
+     * Use {@link isNewRecord} to determine whether the saving is
+     * for inserting or updating record.
+     * Make sure you call the parent implementation so that the event is raised properly.
+     * @return boolean whether the saving should be executed. Defaults to true.
+     */
+    protected function beforeSave()
+    {
+    	if($this->getEventProxy()->hasEventHandler('onBeforeSave'))
+    	{
+    		$event=new ModelEvent($this);
+    		$this->onBeforeSave($event);
+    		return $event->isValid;
+    	}
+    	else
+    		return true;
+    }
+    
+    /**
+     * This method is invoked after saving a record successfully.
+     * The default implementation raises the {@link onAfterSave} event.
+     * You may override this method to do postprocessing after record saving.
+     * Make sure you call the parent implementation so that the event is raised properly.
+     */
+    protected function afterSave()
+    {
+    	if($this->getEventProxy()->hasEventHandler('onAfterSave'))
+    		$this->onAfterSave(new Event($this));
     }
     
     /**

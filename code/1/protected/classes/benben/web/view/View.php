@@ -19,7 +19,7 @@ abstract class View extends ApplicationComponent implements IView
      * 视图模板
      * @var string
      */
-    protected $_teamplate;
+    protected $_viewFile;
     protected $_data = array();
     protected $_layout = '';
     

@@ -3,14 +3,16 @@ namespace application\controllers;
 use application\models\RegFormModel;
 use benben\web\widgets\ActiveForm;
 use benben\Benben;
-
+use application\models\UserModel;
+use application\models\LoginFormModel;
+use application\components\UserIdentity;
 /** 
  * @author benben
  * 
  */
 class AccountController extends Controller
 {
-	public $layout = 'simple';
+	protected $_layout = 'simple';
 	
     /**
 	 * @return array action filters
@@ -31,7 +33,7 @@ class AccountController extends Controller
 	{
 		return array(
 				array('allow',  // allow all users to access 'login,reg' actions.
-						'actions'=>array('login','reg','code'),
+						'actions'=>array('login','reg','code','insert'),
 						'users'=>array('*'),
 				),
 				array('allow', // allow authenticated users to access all actions
@@ -43,60 +45,73 @@ class AccountController extends Controller
 		);
 	}
 	
-	public function behaviors()
-	{
-		return array(
-			'a'=>array(
-				'class'=>'application\\components\\behaviors\\ValidateCodeBehavior',
-			),			
-		);
-	}
-	
 	public function onLogin($event)
 	{
 		$this->eventProxy->raiseEvent('onLogin', $event);
+	}
+	
+	public function actionLogin()
+	{
+		$formModel = new LoginFormModel();
+		$formData = isset($_POST['LoginFormModel']) ? $_POST['LoginFormModel'] : array();
+		$formModel->attributes = $formData;
+		
+		if(!empty($formData))
+		{
+			if($formModel->validate())
+			{
+				$this->redirect('/');
+				Benben::app()->end();
+			}
+			else
+			{
+				$formModel->clearErrors();
+				$formModel->addError('password', Benben::t('message', 'Incorrect username or password.'));
+			}
+		}
+		
+		$this->render(array('model'=>$formModel));
 	}
 
     public function actionReg()
     {
     	$formModel = new RegFormModel();
-    	$formModel->setScenario('register');
     	$this->performAjaxValidation($formModel);
     	$formData = isset($_POST['RegFormModel']) ? $_POST['RegFormModel'] : array();
-    	
     	$formModel->attributes = $formData;
     	
     	$formModel->setScenario('reg');
     	
     	if(!empty($formData) && $formModel->validate())
     	{
-    		if(empty($_GET['jump']))
+    		unset($formData['password2']);
+    		unset($formData['verifyCode']);
+    		$formData['password'] = UserIdentity::encrypt($formData['password']);
+    		$userModel = new UserModel();
+    		$userModel->attributes = $formData;
+    		
+    		if($userModel->insert())
     		{
-    			$_GET['jump'] = '/';
+	    		if(empty($_GET['jump']))
+	    		{
+	    			$_GET['jump'] = '/';
+	    		}
+	    		
+	    		$this->redirect($_GET['jump']);
+	    		Benben::app()->end();
     		}
-    		$this->redirect($_GET['jump']);
     	}
-    	else
-    	{
-			$this->render(array('model'=>$formModel));
-    	}
+    	$this->render(array('model'=>$formModel));
     }
     
     protected function performAjaxValidation($model)
     {
-    	if(isset($_POST['ajax']) && $_POST['ajax']==='user-form')
+    	if(isset($_POST['ajax']) && $_POST['ajax']==='register-form')
     	{
     		 $errors = ActiveForm::validate($model);
     		 if($errors != '[]')
     		 {
     		 	echo $errors;
-    		 }
-    		 else
-    		 {
-    		 	if($_POST['RegFormModel']['username'] == 'test')
-    		 	{
-    		 		echo json_encode(array('RegFormModel_username'=>array('name has existed!')));
-    		 	}
     		 }
     		 Benben::app()->end();
     	}

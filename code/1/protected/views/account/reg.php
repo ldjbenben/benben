@@ -3,15 +3,11 @@ use benben\web\ClientScript;
 use benben\web\helpers\Html;
 use benben\web\helpers\JavaScriptExpression;
 use benben\Benben;
-?>
 
-<?php 
 $cs=Benben::app()->clientScript;
 $cs->coreScriptPosition=ClientScript::POS_HEAD;
-$baseUrl=$this->owner->module->assetsUrl;
 $cs->registerCoreScript('jquery');
-$cs->registerScriptFile($baseUrl.'public/js/jquery.tooltip-1.2.6.min.js');
-
+$assetsUrl = Benben::app()->getAssetsUrl();
 ?>
 	<div class="register-process">
     	<div class="process first-process process-current">
@@ -26,15 +22,14 @@ $cs->registerScriptFile($baseUrl.'public/js/jquery.tooltip-1.2.6.min.js');
         <div class="process">
         <span class="process-dir-inside"></span>
         	<span class="index">3</span>注册成功
-
         </div>
     </div>
     <div class="register-info">
     	<h3 class="title">注册帐号</h3>
-        <div class="register-form">
+        <div class="form register-form">
 <?php
         $form = $this->beginWidget('benben\\web\\widgets\\ActiveForm', array(
-		'id'=>'user-form',
+		'id'=>'register-form',
 		'enableAjaxValidation'=>true,
 		'enableClientValidation'=>true,
 		'clientOptions'=>array(
@@ -47,7 +42,7 @@ $cs->registerScriptFile($baseUrl.'public/js/jquery.tooltip-1.2.6.min.js');
                 <div class="item">
                     <label>用户名</label>
                     <?php echo $form->textField($model,'username', array('class'=>'input-txt username')); ?>
-                    <div class="tooltip-info">
+                    <div class="tooltip-info error-message">
 	                    <span class="icon-border"></span>
 	                    <span class="icon-bg"></span>
 	                    <span class="state"></span>
@@ -57,14 +52,14 @@ $cs->registerScriptFile($baseUrl.'public/js/jquery.tooltip-1.2.6.min.js');
                 <div class="item">
                     <label>登录邮箱</label>
                     <?php echo $form->textField($model,'email', array('class'=>'input-txt email')); ?>
-                    <div class="tooltip-info">
+                    <div class="tooltip-info error-message">
 	                    <span class="icon-border"></span>
 	                    <span class="icon-bg"></span>
 	                    <span class="state"></span>
 	                    <div class="mess"><?php echo $form->error($model,'email'); ?></div>
                     </div>
                 </div>
-                <div class="item">
+                <div class="item item-password">
                     <label>登录密码</label>
                     <?php echo $form->passwordField($model,'password', array('class'=>'input-txt password', 'onkeyup'=>'onPasswordKeyUp()', 'onfocus'=>'passwordOnFocus()', 'onblur'=>'passwordOnBlur()')); ?>
                     <div class="tooltip-info password-tip" id="passwordTip">
@@ -76,7 +71,7 @@ $cs->registerScriptFile($baseUrl.'public/js/jquery.tooltip-1.2.6.min.js');
 	                    	<span></span><span></span><span></span></span>
 	                    <div class="mess">6-20个字符；只能包含大小写、数字及标点</div>
                     </div>
-                    <div class="tooltip-info" id="passwordErrorMessage">
+                    <div class="tooltip-info error-message" id="passwordErrorMessage">
 	                    <span class="icon-border"></span>
 	                    <span class="icon-bg"></span>
 	                    <span class="state"></span>
@@ -93,10 +88,16 @@ $cs->registerScriptFile($baseUrl.'public/js/jquery.tooltip-1.2.6.min.js');
 	                    <div class="mess"><div class="errorMessage"></div></div>
                     </div>
                 </div>
-                <div class="item">
+                <div class="item item-verify">
                     <label>验证码</label>
-                    <input type="text" class="input-txt verify" />
-                    <img src="<?php echo $this->_owner->createUrl('code');?>" height="34" class="verify" />
+                    <?php echo $form->textField($model,'verifyCode', array('class'=>'input-txt')); ?>
+                    <img src="<?php echo $this->_owner->createUrl('verify/code');?>" height="35" class="verify" onclick="refreshVerifyCode(this, '<?php echo $this->_owner->createUrl('verify/code');?>')" />
+                    <div class="tooltip-info error-message" id="passwordErrorMessage">
+	                    <span class="icon-border"></span>
+	                    <span class="icon-bg"></span>
+	                    <span class="state"></span>
+	                    <div class="mess"><div class="errorMessage"><?php echo $form->error($model,'verifyCode'); ?></div></div>
+                    </div>
                     <a href="#" class="change-code">看不清？换一张</a>
                 </div>
                 <div class="item provision-item">
@@ -104,7 +105,7 @@ $cs->registerScriptFile($baseUrl.'public/js/jquery.tooltip-1.2.6.min.js');
                     <a href="#">注册条款</a>
                 </div>
                  <div class="item next-btn-item">
-                 	<a type="button" class="next-step">下一步</a>
+                 	<input type="submit" class="btn next-step" value="下一步" />
                  </div>
 <?php $this->endWidget(); ?>
         </div>
@@ -118,7 +119,7 @@ function password2OnBlur()
 		jQuery(".item-password2").addClass("error");
 		jQuery(".item-password2 .errorMessage").html("两次输入的密码不一致");
 	}
-	else
+	else if(jQuery("#RegFormModel_password2").val().length > 0)
 	{
 		jQuery(".item-password2").removeClass("error");
 		jQuery(".item-password2").addClass("success");
@@ -134,6 +135,13 @@ function passwordOnFocus()
 function passwordOnBlur()
 {
 	jQuery("#passwordTip").hide();
+	if(jQuery("#RegFormModel_password").val().length < 6)
+	{
+		jQuery("#RegFormModel_password").parent().removeClass("success");
+		jQuery("#RegFormModel_password").parent().addClass("error");
+		jQuery("#passwordErrorMessage .errorMessage").html("密码长度不能少于6个字符");
+	}
+	jQuery("#passwordErrorMessage").show();
 }
 
 function onPasswordKeyUp()
@@ -146,7 +154,7 @@ function onPasswordKeyUp()
 	if(length < 6)
 	{
 		level = -1;
-		jQuery("#passwordErrorMessage .errorMessage").html("密码长度不能少于6个字符");
+		//jQuery("#passwordErrorMessage .errorMessage").html("密码长度不能少于6个字符");
 	}
 	else
 	{
@@ -162,6 +170,12 @@ function onPasswordKeyUp()
 
 function afterValidateAttribute(form, attribute, data, hasError)
 {
+	/*
+	if("password" == attribute.name && hasError && data[attribute.id][0].indexOf("必须被重复")!=-1)
+	{
+		jQuery(".item-password").removeClass("error");
+	}
+	*/
 	/*
 	if(hasError)
 	{

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<!-- saved from url=(0043)http://badminton.example.com/?r=account/reg -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<script type="text/javascript" src="./reg_files/jquery.js"></script>
+<script type="text/javascript" src="./reg_files/jquery.yiiactiveform.js"></script>
+<script type="text/javascript" src="./reg_files/jquery.tooltip-1.2.6.min.js"></script>
+<title>管理员登录</title>
+<script type="text/javascript">
+function a(form){
+	alert("ccccc");
+	return true;
+}
+</script>
+</head>
+
+<body>
+<form id="user-form" method="post"> 
+  <div id="user-form_es_" class="errorSummary" style="display:none"><p>Please fix the following input errors:</p>
+<ul><li>dummy</li></ul></div> 
+  <div class="row">
+      <label for="RegFormModel_username" class="required">Username <span class="required">*</span></label>      <input name="RegFormModel[username]" id="RegFormModel_username" type="text" maxlength="12">      <div class="errorMessage" id="RegFormModel_username_em_" style="display:none"></div>  </div>
+  <div class="row">
+      <label for="RegFormModel_password" class="required">Password <span class="required">*</span></label>      <input name="RegFormModel[password]" id="RegFormModel_password" type="text">      <div class="errorMessage" id="RegFormModel_password_em_" style="display:none"></div>  </div>
+  <div class="row">
+      <label for="RegFormModel_password2">Password2</label>      <input name="RegFormModel[password2]" id="RegFormModel_password2" type="text">      <div class="errorMessage" id="RegFormModel_password2_em_" style="display:none"></div>  </div>
+  <div class="row">
+      <label for="RegFormModel_email">Email</label>      <input name="RegFormModel[email]" id="RegFormModel_email" type="text">      <div class="errorMessage" id="RegFormModel_email_em_" style="display:none"></div>  </div>
+  <div class="row">
+ 	<input type="submit" name="yt0" value="Enter">  </div>
+  </form><script type="text/javascript">
+/*<![CDATA[*/
+jQuery(function($) {
+jQuery('#user-form').yiiactiveform({'validateOnSubmit':true,'beforeValidate':a,'attributes':[{'id':'RegFormModel_username','inputID':'RegFormModel_username','errorID':'RegFormModel_username_em_','model':'application\\models\\RegFormModel','name':'username','enableAjaxValidation':true,'clientValidation':function(value, messages, attribute) {
+
+if($.trim(value)=='') {
+	messages.push("Username cannot be blank.");
+}
+
+
+if($.trim(value)!='') {
+	
+if(value.length<3) {
+	messages.push("Username is too short (minimum is 3 characters).");
+}
+
+if(value.length>12) {
+	messages.push("Username is too long (maximum is 12 characters).");
+}
+
+}
+
+}},{'id':'RegFormModel_password','inputID':'RegFormModel_password','errorID':'RegFormModel_password_em_','model':'application\\models\\RegFormModel','name':'password','enableAjaxValidation':true,'clientValidation':function(value, messages, attribute) {
+
+if($.trim(value)=='') {
+	messages.push("Password cannot be blank.");
+}
+
+
+if(value!=$('#RegFormModel_password2').val()) {
+	messages.push("Password must be repeated exactly.");
+}
+
+}},{'id':'RegFormModel_password2','inputID':'RegFormModel_password2','errorID':'RegFormModel_password2_em_','model':'application\\models\\RegFormModel','name':'password2','enableAjaxValidation':true},{'id':'RegFormModel_email','inputID':'RegFormModel_email','errorID':'RegFormModel_email_em_','model':'application\\models\\RegFormModel','name':'email','enableAjaxValidation':true,'clientValidation':function(value, messages, attribute) {
+
+if($.trim(value)!='' && !value.match(/^[a-zA-Z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$/)) {
+	messages.push("Email is not a valid email address.");
+}
+
+}}],'summaryID':'user-form_es_','focus':'#RegFormModel_firstName'});
+});
+/*]]>*/
+</script>
+
+
+<!-- start log messages -->
+<table class="benbenLog" width="100%" cellpadding="4" style="border-spacing:2px;font:12px Verdana, Arial, Helvetica, sans-serif;background:#AEAEAE;color:#666666;">
+	<tbody><tr>
+		<th style="background:black;color:white;" colspan="5">
+			Application Log
+		</th>
+	</tr>
+	<tr style="background-color: #ccc;">
+	    <th style="width:120px">Timestamp</th>
+		<th>Level</th>
+		<th>Category</th>
+		<th>Message</th>
+	</tr>
+<tr style="background:#DFFFE0;">
+	<td align="center">16:10:57.380650</td>
+	<td>trace</td>
+	<td>system.base.module</td>
+	<td>
+	Loading "urlManager" application component		<div>E:\liudejin\work\php\badminton\code\1\index.php line:9</div>
+		</td>
+</tr>
+<tr style="background:#DFFFE0;">
+	<td align="center">16:10:57.381747</td>
+	<td>trace</td>
+	<td>system.base.module</td>
+	<td>
+	Loading "request" application component		<div>E:\liudejin\work\php\badminton\code\1\index.php line:9</div>
+		</td>
+</tr>
+<tr style="background:#DFFFE0;">
+	<td align="center">16:10:57.389215</td>
+	<td>trace</td>
+	<td>benben.filters.FilterChain</td>
+	<td>
+	Running filter
+application\controllers\AccountController.filteraccessControl()		<div>E:\liudejin\work\php\badminton\code\1\index.php line:9</div>
+		</td>
+</tr>
+<tr style="background:#DFFFE0;">
+	<td align="center">16:10:57.390265</td>
+	<td>trace</td>
+	<td>system.base.module</td>
+	<td>
+	Loading "user" application component		<div>E:\liudejin\work\php\badminton\code\1\index.php line:9</div>
+		</td>
+</tr>
+<tr style="background:#DFFFE0;">
+	<td align="center">16:10:57.392374</td>
+	<td>trace</td>
+	<td>system.base.module</td>
+	<td>
+	Loading "session" application component		<div>E:\liudejin\work\php\badminton\code\1\index.php line:9</div>
+		</td>
+</tr>
+<tr style="background:#DFFFE0;">
+	<td align="center">16:10:57.396086</td>
+	<td>trace</td>
+	<td>system.base.module</td>
+	<td>
+	Loading "view" application component		<div>E:\liudejin\work\php\badminton\code\1\protected\classes\application\controllers\AccountController.php line:67</div>
+		</td>
+</tr>
+<tr style="background:#DFFFE0;">
+	<td align="center">16:10:57.398226</td>
+	<td>trace</td>
+	<td>system.base.module</td>
+	<td>
+	Loading "clientScript" application component		<div>E:\liudejin\work\php\badminton\code\1\protected\views\account\reg.php line:13</div>
+		</td>
+</tr>
+<tr style="background:#DFFFE0;">
+	<td align="center">16:10:57.400855</td>
+	<td>trace</td>
+	<td>system.base.module</td>
+	<td>
+	Loading "widgetFactory" application component		<div>E:\liudejin\work\php\badminton\code\1\protected\views\account\reg.php line:37</div>
+		</td>
+</tr>
+<tr style="background:#DFFFE0;">
+	<td align="center">16:10:57.415550</td>
+	<td>trace</td>
+	<td>system.base.module</td>
+	<td>
+	Loading "assetManager" application component		<div>E:\liudejin\work\php\badminton\code\1\protected\classes\application\controllers\AccountController.php line:67</div>
+		</td>
+</tr>
+</tbody></table>
+<!-- end of log messages --></body></html>

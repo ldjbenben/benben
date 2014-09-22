@@ -76,6 +76,23 @@ class Model extends Component
 		return array();
 	}
 	
+	public function behaviors()
+	{
+		return array();
+	}
+	
+	/**
+	 * This method is invoked after a model instance is created by new operator.
+	 * The default implementation raises the {@link onAfterConstruct} event.
+	 * You may override this method to do postprocessing after model creation.
+	 * Make sure you call the parent implementation so that the event is raised properly.
+	 */
+	protected function afterConstruct()
+	{
+		if($this->getEventProxy()->hasEventHandler('onAfterConstruct'))
+			$this->onAfterConstruct(new Event($this));
+	}
+	
 	/**
 	 * Performs the validation.
 	 *
@@ -329,6 +346,7 @@ class Model extends Component
 		if(!is_array($values))
 			return;
 		$attributes=array_flip($safeOnly ? $this->getSafeAttributeNames() : $this->attributeNames());
+		
 		foreach($values as $name=>$value)
 		{
 			if(isset($attributes[$name]))
@@ -362,7 +380,7 @@ class Model extends Component
 					$attributes[$name]=true;
 			}
 		}
-	
+		
 		foreach($unsafe as $name)
 			unset($attributes[$name]);
 		return array_keys($attributes);

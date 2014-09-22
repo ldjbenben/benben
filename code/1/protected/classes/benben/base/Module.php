@@ -18,6 +18,7 @@ class Module extends Component
      * @var string ID
      */
     protected $_id;
+    private $_parentModule;
     /**
      * @var string 应用程序目录
      */
@@ -111,7 +112,7 @@ class Module extends Component
      * @param string $controllerId
      * @return Controller
      */
-    public function createController($controllerId)
+    /* public function createController($controllerId)
     {
         if (empty($controllerId))
         {
@@ -124,7 +125,7 @@ class Module extends Component
         else
         {
             $controllerClassName = 'application\\controllers\\'.ucfirst($controllerId).'Controller';
-        }         
+        }
         
         $classFile = CLASS_PATH.'/'.str_replace('\\', '/',$controllerClassName).'.php';
         
@@ -138,7 +139,7 @@ class Module extends Component
         }
         
         return null;
-    }
+    } */
     
     public function setDefaultController($controller)
     {
@@ -178,5 +179,14 @@ class Module extends Component
     public function afterControllerAction($controller, $action)
     {
     
+    }
+    
+    /**
+     * Returns the parent module.
+     * @return Module the parent module. Null if this module does not have a parent.
+     */
+    public function getParentModule()
+    {
+    	return $this->_parentModule;
     }
 }

@@ -1,0 +1,5 @@
+<TextureAtlas imagePath="sprites.png">
+	<SubTexture name="login-key-icon.png" x="105" y="0" width="10" height="18"/>
+	<SubTexture name="login-locked-icon.png" x="92" y="0" width="11" height="15"/>
+	<SubTexture name="login-logic-icons.png" x="0" y="0" width="90" height="16"/>
+</TextureAtlas>

@@ -51,7 +51,7 @@ class FormModel extends Model
 	{
 	}
 
-	protected function behaviors()
+	public function behaviors()
 	{
 		return array();
 	}

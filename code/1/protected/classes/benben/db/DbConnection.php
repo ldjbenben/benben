@@ -15,6 +15,25 @@ class DbConnection extends ApplicationComponent
     public $password = '';
     public $charset = 'utf8';
     public $tablePrefix = '';
+    
+    /**
+     * @var integer number of seconds that table metadata can remain valid in cache.
+     * Use 0 or negative value to indicate not caching schema.
+     * If greater than 0 and the primary cache is enabled, the table metadata will be cached.
+     * @see schemaCachingExclude
+     */
+    public $schemaCachingDuration=0;
+    /**
+     * @var array list of tables whose metadata should NOT be cached. Defaults to empty array.
+     * @see schemaCachingDuration
+     */
+    public $schemaCachingExclude=array();
+    /**
+     * @var string the ID of the cache application component that is used to cache the table metadata.
+     * Defaults to 'cache' which refers to the primary cache application component.
+     * Set this property to false if you want to disable caching table metadata.
+    */
+    public $schemaCacheID='cache';
     /**
      * the ID of the cache application component that is used for query caching.
      * Defaults to 'cache' which refers to the primary cache application component.
@@ -119,7 +138,7 @@ class DbConnection extends ApplicationComponent
     /**
 	 * Open or close the DB connection.
 	 * @param boolean $value whether to open or close DB connection
-	 * @throws CException if connection fails
+	 * @throws Exception if connection fails
 	 */
 	public function setActive($value)
 	{
@@ -252,6 +271,18 @@ class DbConnection extends ApplicationComponent
         $this->queryDependency = $dependency;
         $this->queryCacheCount = $queryCount;
         return $this;
+    }
+    
+    /**
+     * Returns the ID of the last inserted row or sequence value.
+     * @param string $sequenceName name of the sequence object (required by some DBMS)
+     * @return string the row ID of the last row inserted, or the last value retrieved from the sequence object
+     * @see http://www.php.net/manual/en/function.PDO-lastInsertId.php
+     */
+    public function getLastInsertID($sequenceName='')
+    {
+    	$this->setActive(true);
+    	return $this->_pdo->lastInsertId($sequenceName);
     }
     
     /**

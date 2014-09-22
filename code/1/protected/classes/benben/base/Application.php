@@ -33,10 +33,10 @@ abstract class Application extends Module
      */
     protected $_db = null;
     /**
-     * 当前地区,取值为地区的缩写如中国为zh_cn,英国为en
-     * @var string
+     * @var string the language that the application is written in. This mainly refers to
+     * the language that the messages and view files are in. Defaults to 'en_us' (US English).
      */
-    public $sourceLanguage = 'zh_cn';
+    public $sourceLanguage='en_us';
     private $_language;
     private $_components = array();
     private $_componentConfig=array();
@@ -79,6 +79,9 @@ abstract class Application extends Module
         				'language'=>'en_us',
         				'basePath'=>BENBEN_PATH.DIRECTORY_SEPARATOR.'messages',
         		),
+        		'messages'=>array(
+        				'class'=>'benben\\i18n\\PhpMessageSource',
+        		),
                 'db'=>array(
                 		'class'=>'benben\db\DbConnection',
                 ),
@@ -90,9 +93,6 @@ abstract class Application extends Module
                  ),
         		'request'=>array(
         				'class'=>'benben\web\HttpRequest',
-        		),
-        		'view'=>array(
-        				'class'=>'benben\web\view\BasicView',
         		),
                 'log'=>array(
                 		'class'=>'benben\log\Logger',
@@ -367,6 +367,37 @@ abstract class Application extends Module
     		$this->onEndRequest(new Event($this));
     	if($exit)
     		exit($status);
+    }
+    
+    /**
+     * Returns the localized version of a specified file.
+     *
+     * The searching is based on the specified language code. In particular,
+     * a file with the same name will be looked for under the subdirectory
+     * named as the locale ID. For example, given the file "path/to/view.php"
+     * and locale ID "zh_cn", the localized file will be looked for as
+     * "path/to/zh_cn/view.php". If the file is not found, the original file
+     * will be returned.
+     *
+     * For consistency, it is recommended that the locale ID is given
+     * in lower case and in the format of LanguageID_RegionID (e.g. "en_us").
+     *
+     * @param string $srcFile the original file
+     * @param string $srcLanguage the language that the original file is in. If null, the application {@link sourceLanguage source language} is used.
+     * @param string $language the desired language that the file should be localized to. If null, the {@link getLanguage application language} will be used.
+     * @return string the matching localized file. The original file is returned if no localized version is found
+     * or if source language is the same as the desired language.
+     */
+    public function findLocalizedFile($srcFile,$srcLanguage=null,$language=null)
+    {
+    	if($srcLanguage===null)
+    		$srcLanguage=$this->sourceLanguage;
+    	if($language===null)
+    		$language=$this->getLanguage();
+    	if($language===$srcLanguage)
+    		return $srcFile;
+    	$desiredFile=dirname($srcFile).DIRECTORY_SEPARATOR.$language.DIRECTORY_SEPARATOR.basename($srcFile);
+    	return is_file($desiredFile) ? $desiredFile : $srcFile;
     }
     
     /**

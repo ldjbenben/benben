@@ -78,68 +78,69 @@
 	background:#FFF;
 }
 .register-info .title{
-	font-size:16px;
+	font-size:1.25em;
 	font-weight:normal;
 	color:#333;
 	margin:0px 10px;
 	padding:15px 10px;
 	border-bottom:solid 1px #DDD;
 }
-.register-form{
-	margin-left:260px;
-}
-.register-form .item{
+.form .item{
 	position:relative;
-	padding:10px;
-	font-size:16px;
+	padding:10px 0px;
 }
-.register-form input{
-	font-size:16px;
-}
-.register-form .item label{
+.form label{
 	display:inline-block;
 	width:100px;
 	text-align:right;
 	line-height:30px;
+	font-size:1.25em;
 }
-.register-form .item .input-txt{
+.form .input-txt{
 	height:30px;
 	width:300px;
+	font-size:1.25em;
 }
-
-.register-form .item input.verify{
-	width:100px;
-}
-.register-form .item img.verify{
+.item-verify img{
+	cursor:pointer;
 	vertical-align:middle;
 }
-.register-form a, .register-form a:visited{
+
+.form .item-verify .input-txt{
+	width:100px;
+}
+.form a, .form a:visited{
 	font-size:12px;
 	color:#2A6496;
 }
-.register-form .provision-item{
+.form .provision-item{
 	font-size:12px;
 	padding-left:100px;
 }
-.register-form .provision-item input{
+.form .provision-item input{
 	vertical-align:middle;
 }
-.register-form  .next-btn-item{
+.form  .next-btn-item{
 	text-align:center;
 }
-.register-form  .next-btn-item .next-step{
+.form .btn{
 	display:inline-block;
 	border:none;
 	color:#FFF;
 	font-size:16px;
 	background:#DC3C00;
-	width:300px;
-	height:44px;
-	line-height:44px;
 	cursor:pointer;
 }
-.register-form .errorMessage{
+.form .errorMessage{
 	color:#a80000;
+}
+.register-form{
+	margin-left:260px;
+}
+.register-form .btn{
+	width:300px;
+	height:40px;
+	line-height:40px;
 }
 .password-tip .strength span{
 	display:inline-block;
@@ -154,7 +155,7 @@
 .password-tip .level{
 	font-style:normal;
 }
-.tooltip-info{
+.item .tooltip-info{
 	display:none;
 	position:absolute;
 	top:10px;
@@ -163,10 +164,13 @@
 	padding:10px;
 	font-size:12px;
 }
-.register-form .tooltip-info .mess{
+.success .tooltip-info{
+	display:block;
+}
+.form .tooltip-info .mess{
 	color:#666;
 }
-.error .tooltip-info{
+.error .error-message{
 	display:block;
 }
 .tooltip-info .icon-border{
@@ -189,19 +193,97 @@
 	border-width:8px 8px;
 	border-color:transparent #fff transparent transparent;
 }
-div.tooltip-ok{
+.form .success .tooltip-info, .form .validating .tooltip-info{
 	border:none;
 }
-.icon-bg, div.tooltip-ok .icon-border{
+.form .validating .icon-bg, .form .success .icon-bg, 
+.form .validating .icon-border, .form .success .icon-border
+{
 	display:none;
 }
 .tooltip-info .state{
 	display:none;
 }
-div.success .state{
+.form .success .state{
 	display:inline-block;
 	width:16px;
 	height:16px;
-	background:url(../img/login-logic-icons.png) -74px 0 no-repeat;
+	background:url(../img/icons.png) -74px 0 no-repeat;
 }
-.error .tooltip
+.form .validating .tooltip-info{
+	display:block;
+}
+.form .validating .state{
+	display:inline-block;
+	width:16px;
+	height:16px;
+	background:#F00;
+}
+.form .success .errorMessage{
+	display:none;
+}
+
+/* 登录页 样式 */
+.login-wrap{
+	width:790px;
+	margin:0px auto;
+	margin-top:100px;
+}
+.login-banner{
+	float:left;
+	width:423px;
+}
+.login-info{
+	float:right;
+	width:260px;
+	overflow:hidden;
+	padding:15px 30px;
+	border:solid 1px #ddd;
+	color:#666;
+}
+.login-info .title{
+	font-weight:normal;
+	font-size:1.2em;
+}
+.login-form{
+	
+}
+.form .item{
+	width:100%;
+}
+.login-form .input-txt{
+	width:100%;
+	padding:3px 0px;
+	text-indent:30px;
+	border:1px solid #e1e1e1;
+}
+.login-form .input-txt:focus{
+	border:1px solid #e1e100;
+}
+.login-form .btn-login{
+}
+.login-form .item-remember-me{
+	font-size:12px;
+	vertical-align:middle;
+}
+.login-form .item-remember-me a{
+	float:right;
+}
+.login-form .username{
+	background:url(../img/login-locked-icon.png) 10px no-repeat;
+}
+.login-form .password{
+	background:url(../img/login-key-icon.png) 10px no-repeat;
+}
+.login-form .btn-login{
+	width:100%;
+	height:40px;
+	line-height:40px;
+}
+.login-form .btn-login:hover{
+	background:#b43200;
+}
+.login-form .link{
+	float:right;
+	margin-left:10px;
+}
